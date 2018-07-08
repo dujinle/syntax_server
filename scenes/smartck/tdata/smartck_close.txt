@@ -1,0 +1,41 @@
+#闹钟停止响铃场景设置
+{
+	"msg":{
+		"close_start":["能关闭%d个闹钟"],
+		"close_succ":["闹钟已经帮您关了","帮您把闹钟关闭了"],
+		"ck_exist":["闹钟已经存在"],
+		"ck_unknow":["没有找到可以关闭的闹钟"]
+	},
+#-----------------------------------------------------
+#灵活配置查询闹钟的事件
+#t2t==>find_cks time_to_time
+#time==>find_cks_bytime
+#relate==>find_cks_byrelate
+#after==>find_cks_after_time
+#all==>find_all_cks
+#num==>get_cks_num
+#-----------------------------------------------------
+	"template":[
+		{
+			"reg":"TIMETOTIME",
+			"func":"t2t"
+		},
+		{
+			"reg":"NUNIT",
+			"func":"num"
+		},
+		{
+			"reg":"AND.*RELATETO",
+			"func":"relate"
+		},
+		{
+			"reg":"TIME.*ALL",
+			"func":"time"
+		},
+		{
+			"reg":"CLOSEACLOCK
+				|ALL",
+			"func":"all"
+		}
+	]
+}

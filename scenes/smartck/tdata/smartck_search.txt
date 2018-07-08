@@ -1,0 +1,40 @@
+#查询闹钟场景设置
+{
+#反馈的信息列表
+	"msg":{
+		"set_start":["好的,这就帮您看一下"],
+		"ck_unknow":["闹钟没有找到哦..."],
+		"ck_info":["闹钟内容是%s"],
+		"ck_num":["我看了一下，找到了%d个闹钟"],
+		"ck_infos":["%s等%d闹钟已经找到"]
+	},
+#-----------------------------------------------------
+#灵活配置查询闹钟的事件
+#t2t==>find_cks time_to_time
+#time==>find_cks_bytime
+#info==>find_cks_byinfo
+#after==>find_cks_after_time
+#all==>find_all_cks
+#num==>get_cks_num
+#-----------------------------------------------------
+	"template":[
+		{
+			"reg":"TIMETOTIME",
+			"func":"t2t"
+		},
+		{
+			"reg":"(SEE.*ALL)
+				|(SEE.*HAVEHOWMANY)
+				|(SEE.*HAVEWHAT)",
+			"func":"all"
+		},
+		{
+			"reg":"NUNIT",
+			"func":"num"
+		},
+		{
+			"reg":"(AFTERHAVEWHAT)",
+			"func":"after"
+		}
+	]
+}

@@ -1,0 +1,456 @@
+{
+    "text": "国庆节早上8点", 
+    "SomeNum": {
+        "8": {
+            "type": "NUM", 
+            "value": "8", 
+            "label": "D"
+        }
+    }, 
+    "inlist": [
+        "国庆", 
+        "节", 
+        "早上", 
+        "8", 
+        "点"
+    ], 
+    "otext": "国庆节早上8点", 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点", 
+            "label": "Time"
+        }, 
+        {
+            "type": "JIEJIARI", 
+            "str": "国庆节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "早上", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "中秋节晚上8点", 
+    "inlist": [
+        "中秋", 
+        "节", 
+        "晚上", 
+        "8", 
+        "点"
+    ], 
+    "otext": "中秋节晚上8点", 
+    "SomeNum": {
+        "8": {
+            "type": "NUM", 
+            "value": "8", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点", 
+            "label": "Time"
+        }, 
+        {
+            "type": "JIEJIARI", 
+            "str": "中秋节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "晚上", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "端午节午时", 
+    "inlist": [
+        "端", 
+        "午节", 
+        "午时"
+    ], 
+    "otext": "端午节午时", 
+    "SomeNum": {}, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "JIEJIARI", 
+            "str": "端午节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "午时", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "鬼节子时", 
+    "inlist": [
+        "鬼节", 
+        "子时"
+    ], 
+    "otext": "鬼节子时", 
+    "SomeNum": {}, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "JIEJIARI", 
+            "str": "鬼节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "子时", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "大寒6点", 
+    "inlist": [
+        "大寒", 
+        "6", 
+        "点"
+    ], 
+    "otext": "大寒6点", 
+    "SomeNum": {
+        "6": {
+            "type": "NUM", 
+            "value": "6", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点", 
+            "label": "Time"
+        }, 
+        {
+            "type": "JIEQI", 
+            "str": "大寒", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "2016年春分", 
+    "inlist": [
+        "2016", 
+        "年", 
+        "春分"
+    ], 
+    "otext": "2016年春分", 
+    "SomeNum": {
+        "2016": {
+            "type": "NUM", 
+            "value": "2016", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "TimeD", 
+            "str": "D年", 
+            "label": "TimeD"
+        }, 
+        {
+            "type": "JIEQI", 
+            "str": "春分", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "去年中秋节", 
+    "inlist": [
+        "去年", 
+        "中秋", 
+        "节"
+    ], 
+    "otext": "去年中秋节", 
+    "SomeNum": {}, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "JIEJIARI", 
+            "str": "中秋节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "REL", 
+            "str": "去年", 
+            "label": "REL"
+        }
+    ]
+}
+{
+    "text": "昨天上半夜", 
+    "inlist": [
+        "昨天", 
+        "上半夜"
+    ], 
+    "otext": "昨天上半夜", 
+    "SomeNum": {}, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "ONEDAY", 
+            "str": "半夜", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "REL", 
+            "str": "昨天", 
+            "label": "REL"
+        }
+    ]
+}
+{
+    "text": "前天午夜", 
+    "inlist": [
+        "前天", 
+        "午夜"
+    ], 
+    "otext": "前天午夜", 
+    "SomeNum": {}, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "ONEDAY", 
+            "str": "午夜", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "REL", 
+            "str": "前天", 
+            "label": "REL"
+        }
+    ]
+}
+{
+    "text": "礼拜6白天", 
+    "inlist": [
+        "礼拜", 
+        "6", 
+        "白天"
+    ], 
+    "otext": "礼拜6白天", 
+    "SomeNum": {
+        "6": {
+            "type": "NUM", 
+            "value": "6", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "TimeSet", 
+            "str": "礼拜D", 
+            "label": "TimeSet"
+        }
+    ]
+}
+{
+    "text": "七夕节晚上12点", 
+    "inlist": [
+        "七夕", 
+        "节", 
+        "晚上", 
+        "12", 
+        "点"
+    ], 
+    "otext": "七夕节晚上12点", 
+    "SomeNum": {
+        "七": {
+            "type": "NUM", 
+            "value": "七", 
+            "label": "D"
+        }, 
+        "12": {
+            "type": "NUM", 
+            "value": "12", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点", 
+            "label": "Time"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "晚上", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "2020年父亲节", 
+    "inlist": [
+        "2020", 
+        "年", 
+        "父亲", 
+        "节"
+    ], 
+    "otext": "2020年父亲节", 
+    "SomeNum": {
+        "2020": {
+            "type": "NUM", 
+            "value": "2020", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "TimeD", 
+            "str": "D年", 
+            "label": "TimeD"
+        }, 
+        {
+            "type": "JIERIWEEK", 
+            "str": "父亲节", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "2030年情人节", 
+    "inlist": [
+        "2030", 
+        "年", 
+        "情人", 
+        "节"
+    ], 
+    "otext": "2030年情人节", 
+    "SomeNum": {
+        "2030": {
+            "type": "NUM", 
+            "value": "2030", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "TimeD", 
+            "str": "D年", 
+            "label": "TimeD"
+        }, 
+        {
+            "type": "JIEJIARI", 
+            "str": "情人节", 
+            "label": "TimeN"
+        }
+    ]
+}
+{
+    "text": "大后年清明节早上10点5分", 
+    "inlist": [
+        "大后年", 
+        "清明", 
+        "节", 
+        "早上", 
+        "10", 
+        "点", 
+        "5", 
+        "分"
+    ], 
+    "otext": "大后年清明节早上10点5分", 
+    "SomeNum": {
+        "10": {
+            "type": "NUM", 
+            "value": "10", 
+            "label": "D"
+        }, 
+        "5": {
+            "type": "NUM", 
+            "value": "5", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点D分", 
+            "label": "Time"
+        }, 
+        {
+            "type": "JIEQI", 
+            "str": "清明", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "早上", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "REL", 
+            "str": "后年", 
+            "label": "REL"
+        }
+    ]
+}
+{
+    "text": "大前年春节晚上9点9分9秒", 
+    "inlist": [
+        "大前年", 
+        "春节", 
+        "晚上", 
+        "9", 
+        "点", 
+        "9", 
+        "分", 
+        "9", 
+        "秒"
+    ], 
+    "otext": "大前年春节晚上9点9分9秒", 
+    "SomeNum": {
+        "9": {
+            "type": "NUM", 
+            "value": "9", 
+            "label": "D"
+        }
+    }, 
+    "result": {}, 
+    "TimeLabel": [
+        {
+            "type": "Time", 
+            "str": "D点D分D秒", 
+            "label": "Time"
+        }, 
+        {
+            "type": "JIEJIARI", 
+            "str": "春节", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "ONEDAY", 
+            "str": "晚上", 
+            "label": "TimeN"
+        }, 
+        {
+            "type": "REL", 
+            "str": "前年", 
+            "label": "REL"
+        }
+    ]
+}

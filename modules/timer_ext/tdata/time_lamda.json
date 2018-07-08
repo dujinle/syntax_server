@@ -1,0 +1,29 @@
+##时间标记组合规则
+{
+	"复合时间短语":{
+		"(TimeC|TimeN){1,}Time":{
+			"content":"上午9点"
+		},
+		"Date(TimeN|TimeC){1,}Time":{
+			"content":"2003年上午9点"
+		},
+		"Date(TimeN|TimeC){1,}":{
+			"content":"2004年春天"
+		},
+		"(TimeN|TimeC){1,}Date":{
+			"content":"去年5月11日"
+		},
+		"DateTime":{
+			"content":"5月11日8点10分"
+		},
+		"REL(TimeN|TimeC|TimeD){1,}":{
+			"content":"当天凌晨"
+		},
+		"(Date|Time){1,}TimeLN":{
+			"content":"2003年1月1日前"
+		},
+		"(TimeN|TimeD){1,}TimeLN":{
+			"content":"第一季度以后"
+		}
+	}
+}

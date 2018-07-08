@@ -1,0 +1,14 @@
+{
+	"hanzi":{
+		"reg":"[一二两三四五六七八九零]{1,}",
+		"type":"sample"
+	},
+	"shanzi":{
+		"reg":"[零壹贰叁肆伍陆柒捌玖拾佰仟万亿]+",
+		"type":"sample"
+	},
+	"num":{
+		"reg":"[0-9]+",
+		"type":"sample"
+	}
+}
