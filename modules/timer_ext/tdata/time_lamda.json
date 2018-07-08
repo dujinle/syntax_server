@@ -25,5 +25,37 @@
 		"(TimeN|TimeD){1,}TimeLN":{
 			"content":"第一季度以后"
 		}
+	},
+	"时间介词短语":{
+		"P(Date|TimeC|Time)":{
+			"content":"到8点20分"
+		},
+		"P(Date|TimeC|Time)TimeLN":{
+			"content":"于2004年期间"
+		},
+		"PDateTimeC":{
+			"content":"在2004年春天"
+		},
+		"PDateTimeCTimeLN":{
+			"content":"自2004年春天以来"
+		},
+		"P(TimeN|TimeC)Time":{
+			"content":"在上午10点"
+		},
+		"P(TimeN|TimeC)TimeTimeLN":{
+			"content":"在上午10点以来"
+		},
+		"PRELDateTimeLN":{
+			"content":"在今年7月前"
+		},
+		"PTimeDTimeLN":{
+			"content":"在1个多月前"
+		},
+		"(TimeN|Date|Time|TimeD|TimeC)P(TimeN|Date|Time|TimeD|TimeC)":{
+			"content":"2014年3月15日到去年春天"
+		},
+		"P(TimeN|Date|Time|TimeD|TimeC)(TimeLN)P(TimeN|Date|Time|TimeD|TimeC)TimeLN":{
+			"content":"从2014年底到2009年初"
+		}
 	}
 }
