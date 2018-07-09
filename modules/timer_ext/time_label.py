@@ -18,10 +18,17 @@ class TimeLabel(TimeBase):
 			self.mark_time_label(struct);
 			self.mark_date_label(struct);
 			self.mark_timeset_label(struct);
-
+			#重新处理一遍分词结果
 			self.reseg_text(struct);
+			#根据分词排序TimeLabel
+			self.sort_label(struct);
 			if struct.has_key('tmp_text'):
 				del struct['tmp_text']
+			#寻找TimeN+TimeN的组合
+			self.mark_timec_label(struct);
+			#再次修复分词和排序
+			self.reseg_text(struct);
+			self.sort_label(struct);
 		except Exception as e: raise e;
 
 	def mark_time_label(self,struct):
@@ -164,11 +171,44 @@ class TimeLabel(TimeBase):
 	def reseg_text(self,struct):
 		for item in struct['TimeLabel']:
 			if item['label'] == 'TimeN' or item['label'] == 'Time' or item['label'] == 'REL' \
-				or item['label'] == 'TimeSet' or item['label'] == 'Date':
+				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC':
 				istr = list(item['str']);
-				reg = ' {0,1}'.join(istr);
+				reg = ' *'.join(istr);
 				amatch = re.findall(reg,struct['seg_text']);
 				for tstr in amatch:
 						if len(tstr) == 0: continue;
 						struct['seg_text'] = struct['seg_text'].replace(tstr," " + item['str'],1);
-				
+
+	def sort_label(self,struct):
+		timelabel = list();
+		for istr in struct['seg_text'].split(' '):
+			if len(istr) == 0: continue;
+			for item in struct['TimeLabel']:
+				if istr == item['str']:
+					timelabel.append(item);
+		if len(timelabel) > 0:
+			struct['TimeLabel'] = timelabel;
+
+	def mark_timec_label(self,struct):
+		timelabel = list();
+		prev_item = None;
+		for item in struct['TimeLabel']:
+			timelabel.append(item);
+			if item['label'] == 'TimeN':
+				if not prev_item is None:
+					if prev_item['type'] != "ONEDAY" and item['type'] == "ONEDAY":
+						tdic = dict();
+						tdic['type'] = 'TimeC';
+						tdic['label'] = 'TimeC';
+						tdic['str'] = prev_item['str'] + item['str'];
+						tdic['list'] = [prev_item,item];
+						timelabel.pop();
+						timelabel.pop();
+						timelabel.append(tdic);
+					else:
+						prev_item = None;
+				else:
+					prev_item = item;
+			else:
+				prev_item = None;
+		struct['TimeLabel'] = timelabel;

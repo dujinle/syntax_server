@@ -1,6 +1,9 @@
 ##时间标记组合规则
 {
 	"复合时间短语":{
+		"TimeC":{
+			"content":"清明上午"
+		},
 		"(TimeC|TimeN){1,}Time":{
 			"content":"上午9点"
 		},
@@ -16,7 +19,7 @@
 		"DateTime":{
 			"content":"5月11日8点10分"
 		},
-		"REL(TimeN|TimeC|TimeD){1,}":{
+		"REL(TimeN|TimeC|TimeD|Time){1,}":{
 			"content":"当天凌晨"
 		},
 		"(Date|Time){1,}TimeLN":{
