@@ -28,7 +28,7 @@ class Mager:
 			self.timer.init();
 			self.pdeal.init('PDeal');
 		except Exception as e:
-			raise MyException(sys.exc_info());
+			raise e;
 
 	def _clear_struct(self,struct):
 		if struct.has_key('stseg'): del struct['stseg'];

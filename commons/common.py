@@ -2,7 +2,6 @@
 #-*- coding:utf-8 -*-
 import os,sys,json
 from collections import OrderedDict
-from myexception import MyException
 from logger import *
 
 #global params
@@ -13,8 +12,10 @@ debug = True;
 def read_json(dfile):
 	fid = open(dfile,'r');
 	ondata = list();
+	idx = 0;
 	while True:
 		line = fid.readline();
+		idx = idx + 1;
 		if not line:
 			break;
 		line = line.replace('\r','').replace('\n','').replace('\t','');
@@ -28,9 +29,9 @@ def read_json(dfile):
 	try:
 		ojson = json.loads(all_test,object_pairs_hook=OrderedDict);
 		return ojson;
-	except Exception:
-		print 'read',dfile,'failed......';
-		raise MyException(sys.exc_info());
+	except Exception as e:
+		print 'read',dfile,'failed......line:',idx;
+		raise e;
 
 def readfile(dfile):
 	fp = open(dfile,'r');
@@ -68,7 +69,7 @@ def json_loads_body(func):
 				logging.info(self.request.body);
 				self.body_json = json.loads(self.request.body);
 		except Exception, e:
-			raise MyException(sys.exc_info());
+			raise e;
 		return func(self, *args, **kwargs);
 	return wrapper;
 

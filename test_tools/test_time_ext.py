@@ -8,7 +8,6 @@ sys.path.append(os.path.join(base_path,'../'));
 sys.path.append(os.path.join(base_path,'../commons'));
 #==============================================================
 import common
-from myexception import MyException
 common.debug = False;
 from mager import Mager
 
