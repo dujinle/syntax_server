@@ -44,7 +44,6 @@ class TimeLamda(TimeBase):
 				tmp_lamda = lamda;
 				lamda_stc = list();
 				index = 7;
-				print lamda;
 				while True:
 					if len(tmp_lamda) == 0:
 						print 'finish ok';
@@ -60,7 +59,6 @@ class TimeLamda(TimeBase):
 							lamda_stc.append(timelabel);
 							if len(tmp_lamda) == 0:
 								break;
-							print tmp_lamda;
 						else:
 							tmp_lamda = lamda;
 							lamda_stc = list();
@@ -69,8 +67,10 @@ class TimeLamda(TimeBase):
 							break;
 				if len(lamda_stc) > 0:
 					timelamda.append(lamda_stc);
-			struct['TimeLamda'] = timelamda;
-
+			if len(timelamda) > 0:
+				struct['TimeLamda'] = timelamda.pop();
+			else:
+				struct['TimeLamda'] = timelamda;
 		except Exception as e: raise e;
 
 	def prev_label(self,struct):
@@ -87,11 +87,8 @@ class TimeLamda(TimeBase):
 		for item in struct['TimeLabel']:
 			flag = False;
 			for lamda in struct['TimeLamda']:
-				for ii in lamda:
-					if ii['str'] == item['str']:
-						flag = True;
-						break;
-				if flag == True:
+				if lamda['str'] == item['str']:
+					flag = True;
 					break;
 			if flag == False:
 				timelabel.append(item);
