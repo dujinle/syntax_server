@@ -46,6 +46,7 @@ class TimeLabel(TimeBase):
 						if item.has_key('type'):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
+						tdic['num'] = list();
 						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
@@ -55,6 +56,7 @@ class TimeLabel(TimeBase):
 								item = struct['SomeNum'][key];
 								if len(item['start']) <= 0: continue;
 								tm_str = tm_str.replace("D",item['value'],1);
+								tdic['num'].append(item);
 								item['start'].pop();
 							index = tm_str.find('D');
 						tdic['str'] = tm_str;

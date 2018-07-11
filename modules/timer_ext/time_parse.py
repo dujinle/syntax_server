@@ -62,4 +62,27 @@ class TimeParse(TimeBase):
 							elif iitem['func']['type'] == "ONEDAY":
 						 		struct['TimeParse'][iitem['func']['scope']] = iitem['func']['region'];
 						 		struct['TimeParse']['strs'].append(iitem['str']);
+				elif item['label'] == 'Time':
+					#解析小时级别
+					p = re.compile(u'[时点]');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						hour = item['num'].pop(0);
+						struct['TimeParse']['hour'] = hour['value'];
+					#解析分钟级别
+					p = re.compile(u'[分]');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						minute = item['num'].pop(0);
+						struct['TimeParse']['minute'] = minute['value'];
+					#解析秒级别
+					p = re.compile(u'[秒]');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						second = item['num'].pop(0);
+						struct['TimeParse']['second'] = second['value'];
 		except Exception as e: raise e;
+
+
+
+
