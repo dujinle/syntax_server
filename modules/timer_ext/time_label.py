@@ -5,7 +5,7 @@ from time_base import TimeBase
 #标记对象以及链接的网络
 class TimeLabel(TimeBase):
 
-	def encode(self,struct):
+	def encode(self,struct,time_conf):
 		try:
 			if not struct.has_key('SomeNum'): return False;
 			if not struct.has_key('TimeLabel'):
@@ -108,6 +108,7 @@ class TimeLabel(TimeBase):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
 						struct['tmp_text'] = struct['tmp_text'].replace(tstr,'Date',1);
+						tdic['num'] = list();
 						#D年D月D日 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
@@ -117,6 +118,7 @@ class TimeLabel(TimeBase):
 								item = struct['SomeNum'][key];
 								if len(item['start']) <= 0: continue;
 								tm_str = tm_str.replace("D",item['value'],1);
+								tdic['num'].append(item);
 								item['start'].pop();
 							index = tm_str.find('D');
 						tdic['str'] = tm_str;

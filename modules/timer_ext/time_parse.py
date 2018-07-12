@@ -1,15 +1,23 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-import re,common
+import re,common,time
 from time_base import TimeBase
 #标记对象以及链接的网络
+date_index = {
+	'year':0,
+	'month':1,
+	'day':2,
+	'hour':3,
+	'minute':4,
+	'second':5
+};
 class TimeParse(TimeBase):
 
-	def encode(self,struct):
+	def encode(self,struct,time_conf):
 		try:
 			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
-			self.calc_time_lamda(struct);
+			self.calc_time_lamda(struct,time_conf);
 		except Exception as e: raise e;
 
 	def parse_time_lamda(self,struct):
@@ -32,9 +40,17 @@ class TimeParse(TimeBase):
 								amatch = p.search(iitem['str']);
 								if amatch is None: continue;
 								iitem['func'] = idata;
+				elif item['label'] == 'REL':
+					if self.data.has_key(item['type']):
+						mdata = self.data[item['type']];
+						for idata in mdata:
+							p = re.compile(idata['reg']);
+							amatch = p.search(item['str']);
+							if amatch is None: continue;
+							item['func'] = idata;
 		except Exception as e: raise e;
 
-	def calc_time_lamda(self,struct):
+	def calc_time_lamda(self,struct,time_conf):
 		try:
 			struct['TimeParse']['strs'] = list();
 			for item in struct['TimeLamda']:
@@ -60,15 +76,22 @@ class TimeParse(TimeBase):
 								if iitem['func'].has_key('year_type'):
 									struct['TimeParse']['year_type'] = iitem['func']['year_type'];
 							elif iitem['func']['type'] == "ONEDAY":
-						 		struct['TimeParse'][iitem['func']['scope']] = iitem['func']['region'];
+						 		struct['TimeParse']['hour'] = iitem['func']['region'];
 						 		struct['TimeParse']['strs'].append(iitem['str']);
+						 		if iitem['func']['region'][0] > 12:
+						 			struct['TimeParse']['hour_flag'] = 12;
+						 		else:
+						 			struct['TimeParse']['hour_flag'] = 0;
 				elif item['label'] == 'Time':
 					#解析小时级别
 					p = re.compile(u'[时点]');
 					amatch = p.search(item['str']);
 					if not amatch is None:
 						hour = item['num'].pop(0);
-						struct['TimeParse']['hour'] = hour['value'];
+						if struct['TimeParse'].has_key('hour_flag'):
+							struct['TimeParse']['hour'] = int(hour['value']) + struct['TimeParse']['hour_flag'];
+						else:
+							struct['TimeParse']['hour'] = hour['value'];
 					#解析分钟级别
 					p = re.compile(u'[分]');
 					amatch = p.search(item['str']);
@@ -81,6 +104,43 @@ class TimeParse(TimeBase):
 					if not amatch is None:
 						second = item['num'].pop(0);
 						struct['TimeParse']['second'] = second['value'];
+					struct['TimeParse']['strs'].append(item['str']);
+				elif item['label'] == 'Date':
+					#解析小时级别
+					p = re.compile(u'年');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						year = item['num'].pop(0);
+						struct['TimeParse']['year'] = year['value'];
+					#解析分钟级别
+					p = re.compile(u'月');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						month = item['num'].pop(0);
+						struct['TimeParse']['month'] = month['value'];
+					#解析秒级别
+					p = re.compile(u'[日号]');
+					amatch = p.search(item['str']);
+					if not amatch is None:
+						day = item['num'].pop(0);
+						struct['TimeParse']['day'] = day['value'];
+					struct['TimeParse']['strs'].append(item['str']);
+				elif item['label'] == 'REL':
+					if time_conf.has_key('time_origin'):
+						time_stc = time.localtime(time_conf['time_origin']);
+						if item.has_key('func'):
+							func = item['func'];
+							if func['func'] == 'prev':
+								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] - 1;
+							elif func['func'] == 'prev2':
+								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] - 2;
+							elif func['func'] == 'next':
+								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 1;
+							elif func['func'] == 'next2':
+								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 2;
+						struct['TimeParse']['strs'].append(item['str']);
+								
+
 		except Exception as e: raise e;
 
 

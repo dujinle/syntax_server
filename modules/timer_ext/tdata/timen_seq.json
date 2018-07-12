@@ -870,7 +870,7 @@
 		{
 			"type":"ONEDAY",
 			"scope":"hour",
-			"region":[0,1],
+			"region":[24,25],
 			"reg":"午夜"
 		},
 		{
@@ -1126,14 +1126,14 @@
 		{
 			"type":"REL",
 			"scope":"year",
-			"func":"prev",
-			"reg":"[上前]年"
+			"func":"prev2",
+			"reg":"前年"
 		},
 		{
 			"type":"REL",
 			"scope":"year",
-			"func":"prev2",
-			"reg":"去年"
+			"func":"prev",
+			"reg":"[上去]年"
 		},
 		{
 			"type":"REL",

@@ -1,13 +1,18 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
 
-import os,sys,common
+import os,sys,common,time
 from time_label import TimeLabel
 from time_lamda import TimeLamda
 from time_parse import TimeParse
 class TimeMager():
 	def __init__(self):
 
+		self.time_conf = dict();
+		#默认的时间方式 阳历
+		self.time_conf['year_type'] = 'solar';
+		#默认的时间基点 当前时间
+		self.time_conf['time_origin'] = time.time();
 		base_path = os.path.dirname(__file__);
 		self.dfiles = [
 			os.path.join(base_path,'tdata','time_label.json'),
@@ -28,5 +33,5 @@ class TimeMager():
 	def encode(self,struct):
 		try:
 			for obj in self.tag_objs:
-				obj.encode(struct);
+				obj.encode(struct,self.time_conf);
 		except Exception as e: raise e;

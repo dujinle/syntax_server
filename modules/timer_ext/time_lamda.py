@@ -5,7 +5,7 @@ from time_base import TimeBase
 #标记对象以及链接的网络
 class TimeLamda(TimeBase):
 
-	def encode(self,struct):
+	def encode(self,struct,time_conf):
 		try:
 			struct['TimeLamda'] = list();
 			self.prev_label(struct);
