@@ -13,6 +13,8 @@ class TimeMager():
 		self.time_conf['year_type'] = 'solar';
 		#默认的时间基点 当前时间
 		self.time_conf['time_origin'] = time.time();
+		#时间不充分自动用当前时间补充
+		self.time_conf['time_fill'] = True;
 		base_path = os.path.dirname(__file__);
 		self.dfiles = [
 			os.path.join(base_path,'tdata','time_label.json'),

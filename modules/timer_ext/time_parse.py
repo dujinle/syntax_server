@@ -2,6 +2,7 @@
 #-*- coding:utf-8 -*-
 import re,common,time
 from time_base import TimeBase
+import time_calendar as TCalendarTool
 #标记对象以及链接的网络
 date_index = {
 	'year':0,
@@ -53,6 +54,7 @@ class TimeParse(TimeBase):
 	def calc_time_lamda(self,struct,time_conf):
 		try:
 			struct['TimeParse']['strs'] = list();
+			time_lamda = list();
 			for item in struct['TimeLamda']:
 				if item['label'] == 'TimeN' and item.has_key('func'):
 					if item['func']['type'] == "JIEJIARI" or item['func']['type'] == "JIEQI":
@@ -65,6 +67,18 @@ class TimeParse(TimeBase):
 					elif item['func']['type'] == "ONEDAY":
 						 struct['TimeParse'][item['func']['scope']] = item['func']['region'];
 						 struct['TimeParse']['strs'].append(item['str']);
+					elif item['func']['type'] == 'JIERIWEEK':
+						if struct['TimeParse'].has_key('year'):
+							(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
+							 	= TCalendarTool.GetSolarWeek(
+									int(struct['TimeParse']['year']),
+									int(item['func']['month']),
+									int(item['func']['week_idx']),
+									int(item['func']['week']) + 1
+								);
+							struct['TimeParse']['strs'].append(item['str']);
+					else:
+						time_lamda.append(item);
 				elif item['label'] == 'TimeC':
 					for iitem in item['list']:
 						if iitem['label'] == 'TimeN' and iitem.has_key('func'):
@@ -139,8 +153,21 @@ class TimeParse(TimeBase):
 							elif func['func'] == 'next2':
 								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 2;
 						struct['TimeParse']['strs'].append(item['str']);
-								
-
+				else:
+					time_lamda.append(item);
+			if len(time_lamda) == 0 and struct.has_key('TimeLamda'):
+				del struct['TimeLamda'];
+			else:
+				struct['TimeLamda'] = time_lamda;
+			if struct['TimeParse'].has_key('year_type') and struct['TimeParse']['year_type'] == 'lunar':
+				if struct['TimeParse'].has_key('year') and struct['TimeParse'].has_key('month') and struct['TimeParse'].has_key('day'):
+					(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
+						= TCalendarTool.ToSolarDate(
+							int(struct['TimeParse']['year']),
+							int(struct['TimeParse']['month']),
+							int(struct['TimeParse']['day'])
+						);
+					struct['TimeParse']['year_type'] = 'solar';
 		except Exception as e: raise e;
 
 
