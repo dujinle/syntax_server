@@ -152,6 +152,7 @@ def TolunarDate(year,month,day):
 	lundate = LunarDate.fromSolarDate(year,month,day);
 	return (lundate.year,lundate.month,lundate.day,lundate.isLeapMonth);
 
+#获取某年某月的某个星期几
 def GetSolarWeek(year,month,idx,week):
 	mon_day = time_common.month[month % 12];
 	if time_common._is_leap_year(year):
@@ -166,6 +167,22 @@ def GetSolarWeek(year,month,idx,week):
 			week_day.append(cur_day);
 		cur_day = cur_day + 1;
 	return (year,month,week_day[idx - 1]);
+
+#根据当前日期获取下个星期week的日期
+def GetWeekDay(year,month,day,week):
+	print year,month,day,week
+	date_str = str(year) + str(month) + str(day);
+	time_st = time.strptime(date_str,'%Y%m%d');
+	cur_week = time_st[6] + 1;
+	idx = 0;
+	while True:
+		if cur_week % 8 == week:
+			break;
+		cur_week = cur_week + 1;
+		if cur_week > 7: cur_week = cur_week - 7;
+		idx = idx + 1;
+	return (year,month,day + idx);
+
 
 def GetSolarFullWeek(year,month,idx,week):
 	mon_day = time_common.month[month % 12];

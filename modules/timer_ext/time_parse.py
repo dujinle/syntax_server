@@ -153,6 +153,27 @@ class TimeParse(TimeBase):
 							elif func['func'] == 'next2':
 								struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 2;
 						struct['TimeParse']['strs'].append(item['str']);
+				elif item['label'] == 'TimeSet':
+					if time_conf.has_key('time_origin') and time_conf['time_fill'] == True:
+						time_stc = time.localtime(time_conf['time_origin']);
+						if not struct['TimeParse'].has_key('year'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['year'] = time_stc[date_index['year']];
+						if not struct['TimeParse'].has_key('month'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['month'] = time_stc[date_index['month']];
+						if not struct['TimeParse'].has_key('day'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['day'] = time_stc[date_index['day']];
+						print 'time set start.....'
+						(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
+							= TCalendarTool.GetWeekDay(
+								int(struct['TimeParse']['year']),
+								int(struct['TimeParse']['month']),
+								int(struct['TimeParse']['day']),
+								int(item['num'].pop()['value'])
+							);
+						struct['TimeParse']['strs'].append(item['str']);
 				else:
 					time_lamda.append(item);
 			if len(time_lamda) == 0 and struct.has_key('TimeLamda'):

@@ -34,7 +34,6 @@ class TimeLamda(TimeBase):
 			struct['TimeLamda'] = list();
 			if not lamda_max is None:
 				struct['TimeLamda'].append(lamda_max);
- 			print struct['TimeLamda'];
 		except Exception as e: raise e;
 
 	def creat_lamda(self,struct):
