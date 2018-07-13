@@ -159,6 +159,17 @@ class TimeParse(TimeBase):
 				del struct['TimeLamda'];
 			else:
 				struct['TimeLamda'] = time_lamda;
+			if time_conf['time_fill'] == True:
+				if not struct['TimeParse'].has_key('year'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['year'] = time_stc[date_index['year']];
+				if not struct['TimeParse'].has_key('month'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['month'] = time_stc[date_index['month']];
+				if not struct['TimeParse'].has_key('day'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['day'] = time_stc[date_index['day']];
+
 			if struct['TimeParse'].has_key('year_type') and struct['TimeParse']['year_type'] == 'lunar':
 				if struct['TimeParse'].has_key('year') and struct['TimeParse'].has_key('month') and struct['TimeParse'].has_key('day'):
 					(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \

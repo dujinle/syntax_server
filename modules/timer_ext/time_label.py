@@ -78,6 +78,7 @@ class TimeLabel(TimeBase):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
 						struct['tmp_text'] = struct['tmp_text'].replace(tstr,'TimeSet',1);
+						tdic['num'] = list();
 						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
@@ -86,6 +87,7 @@ class TimeLabel(TimeBase):
 							for key in struct['SomeNum'].keys():
 								item = struct['SomeNum'][key];
 								if len(item['start']) <= 0: continue;
+								tdic['num'].append(item);
 								tm_str = tm_str.replace("D",item['value'],1);
 								item['start'].pop();
 							index = tm_str.find('D');
