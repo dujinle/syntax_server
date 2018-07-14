@@ -1,0 +1,11 @@
+# Python:
+*.py[cod]
+modules/*.py[cod]
+modules/*/*.py[cod]
+modules/*/*/*.py[cod]
+commons/*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
