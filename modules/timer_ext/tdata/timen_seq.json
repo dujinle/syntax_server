@@ -1116,6 +1116,26 @@
 			"reg":"第*2季度"
 		}
 	],
+	"TimeD":[
+		{
+			"type":"TimeD",
+			"scope":"minute",
+			"region":"15",
+			"reg":"一刻"
+		},
+		{
+			"type":"TimeD",
+			"scope":"minute",
+			"region":"30",
+			"reg":"二刻"
+		},
+		{
+			"type":"TimeD",
+			"scope":"minute",
+			"region":"45",
+			"reg":"三刻"
+		}
+	],
 	"REL":[
 		{
 			"type":"REL",

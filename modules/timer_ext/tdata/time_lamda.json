@@ -28,6 +28,9 @@
 		"(Date|Time){1,}TimeLN":{
 			"content":"2003年1月1日前"
 		},
+		"TimeNTimeD":{
+			"content":"午时三刻"
+		},
 		"(TimeN|TimeD){1,}TimeLN":{
 			"content":"第一季度以后"
 		},

@@ -50,7 +50,6 @@ class TimeLabel(TimeBase):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
 						tdic['num'] = list();
-						common.print_dic(tdic)
 						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
