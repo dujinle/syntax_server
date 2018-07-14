@@ -16,6 +16,7 @@ class TimeParse(TimeBase):
 
 	def encode(self,struct,time_conf):
 		try:
+			if not struct.has_key('TimeLamda'): return;
 			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
 			self.calc_time_lamda(struct,time_conf);
@@ -25,15 +26,7 @@ class TimeParse(TimeBase):
 	def parse_time_lamda(self,struct):
 		try:
 			for item in struct['TimeLamda']:
-				if item['label'] == 'TimeN':
-					if self.data.has_key(item['type']):
-						mdata = self.data[item['type']];
-						for idata in mdata:
-							p = re.compile(idata['reg']);
-							amatch = p.search(item['str']);
-							if amatch is None: continue;
-							item['func'] = idata;
-				elif item['label'] == 'TimeC':
+				if item['label'] == 'TimeC':
 					for iitem in item['list']:
 						if self.data.has_key(iitem['type']):
 							mdata = self.data[iitem['type']];
@@ -42,8 +35,8 @@ class TimeParse(TimeBase):
 								amatch = p.search(iitem['str']);
 								if amatch is None: continue;
 								iitem['func'] = idata;
-				elif item['label'] == 'REL':
-					if self.data.has_key(item['type']):
+				elif item['label'] == 'REL' or item['label'] == 'TimeN' or item['label'] == 'Other':
+					if self.data.has_key(item['type']):					
 						mdata = self.data[item['type']];
 						for idata in mdata:
 							p = re.compile(idata['reg']);
@@ -80,6 +73,9 @@ class TimeParse(TimeBase):
 							struct['TimeParse']['strs'].append(item['str']);
 					else:
 						time_lamda.append(item);
+				elif item['label'] == 'Other' and item.has_key('func'):
+					struct['TimeParse'][item['func']['scope']] = item['func']['region'];
+					struct['TimeParse']['strs'].append(item['str']);
 				elif item['label'] == 'TimeC':
 					for iitem in item['list']:
 						if iitem['label'] == 'TimeN' and iitem.has_key('func'):
@@ -166,7 +162,6 @@ class TimeParse(TimeBase):
 						if not struct['TimeParse'].has_key('day'):
 							time_stc = time.localtime(time_conf['time_origin']);
 							struct['TimeParse']['day'] = time_stc[date_index['day']];
-						print 'time set start.....'
 						(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
 							= TCalendarTool.GetWeekDay(
 								int(struct['TimeParse']['year']),

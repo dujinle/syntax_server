@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-import os,sys,re
+import os,sys,re,common
 from time_base import TimeBase
 #标记对象以及链接的网络
 class TimeLabel(TimeBase):
@@ -32,7 +32,10 @@ class TimeLabel(TimeBase):
 
 	def mark_time_label(self,struct):
 		for key in self.data.keys():
-			if not key == 'Date' and not key == 'Time' and not key == 'TimeSet': continue;
+			if not key == 'Date' and \
+				not key == 'Time' and \
+				not key == 'TimeSet' and \
+				not key == 'TimeD': continue;
 			item = self.data[key];
 			if item.has_key('reg'):
 				for reg in item['reg']:
@@ -47,6 +50,7 @@ class TimeLabel(TimeBase):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
 						tdic['num'] = list();
+						common.print_dic(tdic)
 						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
@@ -113,7 +117,8 @@ class TimeLabel(TimeBase):
 	def reseg_text(self,struct):
 		for item in struct['TimeLabel']:
 			if item['label'] == 'TimeN' or item['label'] == 'Time' or item['label'] == 'REL' \
-				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC':
+				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC' \
+				or item['label'] == 'TimeD':
 				istr = list(item['str']);
 				reg = ' *'.join(istr);
 				amatch = re.findall(reg,struct['seg_text']);

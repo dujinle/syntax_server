@@ -16,6 +16,9 @@
 		"(TimeN|TimeC){1,}Date":{
 			"content":"去年5月11日"
 		},
+		"DateOther":{
+			"content":"3月中旬"
+		},
 		"DateTime":{
 			"content":"5月11日8点10分"
 		},
@@ -28,8 +31,8 @@
 		"(TimeN|TimeD){1,}TimeLN":{
 			"content":"第一季度以后"
 		},
-		"TimeN":{
-			"content":"明天"
+		"REL":{
+			"content":"早晨"
 		}
 	},
 	"时间介词短语":{
