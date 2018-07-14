@@ -16,8 +16,7 @@ class TimeLabel(TimeBase):
 			self.mark_objs_text(struct);
 			self.prev_num2text(struct);
 			self.mark_time_label(struct);
-			self.mark_date_label(struct);
-			self.mark_timeset_label(struct);
+#			self.mark_objs_text(struct);
 			#重新处理一遍分词结果
 			self.reseg_text(struct);
 			#根据分词排序TimeLabel
@@ -32,8 +31,9 @@ class TimeLabel(TimeBase):
 		except Exception as e: raise e;
 
 	def mark_time_label(self,struct):
-		if self.data.has_key('Time'):
-			item = self.data['Time'];
+		for key in self.data.keys():
+			if not key == 'Date' and not key == 'Time' and not key == 'TimeSet': continue;
+			item = self.data[key];
 			if item.has_key('reg'):
 				for reg in item['reg']:
 					amatch = re.findall(reg,struct['tmp_text']);
@@ -41,77 +41,13 @@ class TimeLabel(TimeBase):
 						if len(tstr) == 0: continue;
 						tdic = dict();
 						tdic['str'] = tstr;
-						tdic['label'] = 'Time';
-						tdic['type'] = 'Time';
+						tdic['label'] = key;
+						tdic['type'] = key;
 						if item.has_key('type'):
 							tdic['type'] = item['type'];
 						struct['TimeLabel'].append(tdic);
 						tdic['num'] = list();
 						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
-						tm_str = tstr;
-						index = tm_str.find('D');
-						while True:
-							if index == -1: break;
-							for key in struct['SomeNum'].keys():
-								item = struct['SomeNum'][key];
-								if len(item['start']) <= 0: continue;
-								tm_str = tm_str.replace("D",item['value'],1);
-								tdic['num'].append(item);
-								item['start'].pop();
-							index = tm_str.find('D');
-						tdic['str'] = tm_str;
-						struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
-
-	def mark_timeset_label(self,struct):
-		if self.data.has_key('TimeSet'):
-			item = self.data['TimeSet'];
-			if item.has_key('reg'):
-				for reg in item['reg']:
-					amatch = re.findall(reg,struct['tmp_text']);
-					for tstr in amatch:
-						if len(tstr) == 0: continue;
-						tdic = dict();
-						tdic['str'] = tstr;
-						tdic['label'] = 'TimeSet';
-						tdic['type'] = 'TimeSet';
-						if item.has_key('type'):
-							tdic['type'] = item['type'];
-						struct['TimeLabel'].append(tdic);
-						struct['tmp_text'] = struct['tmp_text'].replace(tstr,'TimeSet',1);
-						tdic['num'] = list();
-						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
-						tm_str = tstr;
-						index = tm_str.find('D');
-						while True:
-							if index == -1: break;
-							for key in struct['SomeNum'].keys():
-								item = struct['SomeNum'][key];
-								if len(item['start']) <= 0: continue;
-								tdic['num'].append(item);
-								tm_str = tm_str.replace("D",item['value'],1);
-								item['start'].pop();
-							index = tm_str.find('D');
-						tdic['str'] = tm_str;
-						struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
-
-	def mark_date_label(self,struct):
-		if self.data.has_key('Date'):
-			item = self.data['Date'];
-			if item.has_key('reg'):
-				for reg in item['reg']:
-					amatch = re.findall(reg,struct['tmp_text']);
-					for tstr in amatch:
-						if len(tstr) == 0: continue;
-						tdic = dict();
-						tdic['str'] = tstr;
-						tdic['label'] = 'Date';
-						tdic['type'] = 'Date';
-						if item.has_key('type'):
-							tdic['type'] = item['type'];
-						struct['TimeLabel'].append(tdic);
-						struct['tmp_text'] = struct['tmp_text'].replace(tstr,'Date',1);
-						tdic['num'] = list();
-						#D年D月D日 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
 						tm_str = tstr;
 						index = tm_str.find('D');
 						while True:

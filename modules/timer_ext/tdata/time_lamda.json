@@ -1,9 +1,6 @@
 ##时间标记组合规则
 {
 	"复合时间短语":{
-		"TimeSet":{
-			"content":"星期6"
-		},
 		"TimeC":{
 			"content":"清明上午"
 		},
@@ -30,6 +27,9 @@
 		},
 		"(TimeN|TimeD){1,}TimeLN":{
 			"content":"第一季度以后"
+		},
+		"TimeN":{
+			"content":"明天"
 		}
 	},
 	"时间介词短语":{

@@ -19,6 +19,7 @@ class TimeParse(TimeBase):
 			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
 			self.calc_time_lamda(struct,time_conf);
+			self.reseg_text(struct);
 		except Exception as e: raise e;
 
 	def parse_time_lamda(self,struct):
@@ -202,6 +203,15 @@ class TimeParse(TimeBase):
 					struct['TimeParse']['year_type'] = 'solar';
 		except Exception as e: raise e;
 
-
+	#重新修复分词的结果通过匹配的词语
+	def reseg_text(self,struct):
+		if struct.has_key('TimeParse') and struct['TimeParse'].has_key('strs'):
+			istr = struct['TimeParse']['strs'];
+			reg = ' *'.join(istr);
+			value = ''.join(istr);
+			amatch = re.findall(reg,struct['seg_text']);
+			for tstr in amatch:
+				if len(tstr) == 0: continue;
+				struct['seg_text'] = struct['seg_text'].replace(tstr,value,1);
 
 
