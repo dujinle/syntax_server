@@ -12,6 +12,10 @@ date_index = {
 	'minute':4,
 	'second':5
 };
+big = u'大';
+up = u'上'；
+down = u'下';
+
 class TimeParse(TimeBase):
 
 	def encode(self,struct,time_conf):

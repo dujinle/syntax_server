@@ -38,31 +38,63 @@ class TimeLabel(TimeBase):
 			item = self.data[key];
 			if item.has_key('reg'):
 				for reg in item['reg']:
-					amatch = re.findall(reg,struct['tmp_text']);
-					for tstr in amatch:
-						if len(tstr) == 0: continue;
-						tdic = dict();
-						tdic['str'] = tstr;
-						tdic['label'] = key;
-						tdic['type'] = key;
-						if item.has_key('type'):
-							tdic['type'] = item['type'];
-						struct['TimeLabel'].append(tdic);
-						tdic['num'] = list();
-						#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
-						tm_str = tstr;
-						index = tm_str.find('D');
-						while True:
-							if index == -1: break;
-							for key in struct['SomeNum'].keys():
-								item = struct['SomeNum'][key];
-								if len(item['start']) <= 0: continue;
-								tm_str = tm_str.replace("D",item['value'],1);
-								tdic['num'].append(item);
-								item['start'].pop();
-							index = tm_str.find('D');
-						tdic['str'] = tm_str;
-						struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
+					self._match_time_stc(struct,reg,key,item);
+			else:
+				for ikey in item.keys():
+					iitem = item[ikey];
+					if iitem.has_key('reg'):
+						for reg in iitem['reg']:
+							if ikey == 'weekend':
+								self._match_weekend_stc(struct,reg,key,iitem);
+							else:
+								self._match_time_stc(struct,reg,key,iitem);
+
+	def _match_time_stc(self,struct,reg,key,iitem):
+		amatch = re.findall(reg,struct['tmp_text']);
+		for tstr in amatch:
+			if len(tstr) == 0: continue;
+			tdic = dict();
+			tdic['str'] = tstr;
+			tdic['label'] = key;
+			tdic['type'] = key;
+			if iitem.has_key('type'):
+				tdic['type'] = iitem['type'];
+			struct['TimeLabel'].append(tdic);
+			tdic['num'] = list();
+			#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
+			tm_str = tstr;
+			index = tm_str.find('D');
+			while True:
+				if index == -1: break;
+				for key in struct['SomeNum'].keys():
+					item = struct['SomeNum'][key];
+					if len(item['start']) <= 0: continue;
+					tm_str = tm_str.replace("D",item['value'],1);
+					tdic['num'].append(item);
+					item['start'].pop();
+				index = tm_str.find('D');
+			tdic['str'] = tm_str;
+			struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
+
+	def _match_weekend_stc(self,struct,reg,key,iitem):
+		amatch = re.findall(reg,struct['tmp_text']);
+		for tstr in amatch:
+			if len(tstr) == 0: continue;
+			tdic = dict();
+			tdic['str'] = tstr;
+			tdic['label'] = key;
+			tdic['type'] = key;
+			if iitem.has_key('type'):
+				tdic['type'] = iitem['type'];
+			struct['TimeLabel'].append(tdic);
+			tdic['num'] = list();
+			#D时D分D秒 如果匹配到结果则需要对 词语进行解析恢复数字的本来面目
+			num = dict();
+			num['start'] = [];
+			num['type'] = 'NUM';
+			num['label'] = 'D';
+			num['value'] = 7;
+			tdic['num'].append(num);
 
 	def mark_objs_text(self,struct):
 		try:
