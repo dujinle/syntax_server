@@ -16,6 +16,7 @@ class TimeLabel(TimeBase):
 			self.mark_objs_text(struct);
 			self.prev_num2text(struct);
 			self.mark_time_label(struct);
+			self.mark_timeln_text(struct);
 #			self.mark_objs_text(struct);
 			#重新处理一遍分词结果
 			self.reseg_text(struct);
@@ -32,10 +33,8 @@ class TimeLabel(TimeBase):
 
 	def mark_time_label(self,struct):
 		for key in self.data.keys():
-			if not key == 'Date' and \
-				not key == 'Time' and \
-				not key == 'TimeSet' and \
-				not key == 'TimeD': continue;
+			if not key == 'Date' and not key == 'Time' and \
+				not key == 'TimeSet' and not key == 'RELA' and not key == 'TimeD': continue;
 			item = self.data[key];
 			if item.has_key('reg'):
 				for reg in item['reg']:
@@ -68,7 +67,48 @@ class TimeLabel(TimeBase):
 	def mark_objs_text(self,struct):
 		try:
 			for key in self.data.keys():
-				if key == 'Date' or key == 'Time' or key == 'TimeSet': continue;
+				if key == 'Date': continue;
+				if key == 'Time': continue;
+				if key == 'TimeSet': continue;
+				if key == 'TimdD': continue;
+				if key == 'TimeLN': continue;
+				if key == 'RELA': continue;
+				item = self.data[key];
+				if item.has_key('reg'):
+					for reg in item['reg']:
+						amatch = re.findall(reg,struct['tmp_text']);
+						for tstr in amatch:
+							if len(tstr) == 0: continue;
+							tdic = dict();
+							tdic['str'] = tstr;
+							tdic['label'] = key;
+							tdic['type'] = key;
+							if item.has_key('type'):
+								tdic['type'] = item['type'];
+							struct['TimeLabel'].append(tdic);
+							struct['tmp_text'] = struct['tmp_text'].replace(tstr,key,1);
+				else:
+					for ikey in item.keys():
+						iitem = item[ikey];
+						if iitem.has_key('reg'):
+							for reg in iitem['reg']:
+								amatch = re.findall(reg,struct['tmp_text']);
+								for tstr in amatch:
+									if len(tstr) == 0: continue;
+									tdic = dict();
+									tdic['str'] = tstr;
+									tdic['label'] = key;
+									tdic['type'] = key;
+									if iitem.has_key('type'):
+										tdic['type'] = iitem['type'];
+									struct['TimeLabel'].append(tdic);
+									struct['tmp_text'] = struct['tmp_text'].replace(tstr,key,1);
+		except Exception as e: raise e;
+
+	def mark_timeln_text(self,struct):
+		try:
+			for key in self.data.keys():
+				if not key == 'TimeLN': continue;
 				item = self.data[key];
 				if item.has_key('reg'):
 					for reg in item['reg']:
@@ -117,7 +157,7 @@ class TimeLabel(TimeBase):
 		for item in struct['TimeLabel']:
 			if item['label'] == 'TimeN' or item['label'] == 'Time' or item['label'] == 'REL' \
 				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC' \
-				or item['label'] == 'TimeD':
+				or item['label'] == 'TimeD' or item['label'] == 'RELA':
 				istr = list(item['str']);
 				reg = ' *'.join(istr);
 				amatch = re.findall(reg,struct['seg_text']);

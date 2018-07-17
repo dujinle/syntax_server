@@ -44,6 +44,15 @@ class TimeParse(TimeBase):
 							amatch = p.search(item['str']);
 							if amatch is None: continue;
 							item['func'] = idata;
+				elif item['label'] == 'RELA':
+					if self.data.has_key(item['type']):
+						tstr = self.prev_num2text(item);	
+						mdata = self.data[item['type']];
+						for idata in mdata:
+							p = re.compile(idata['reg']);
+							amatch = p.search(tstr);
+							if amatch is None: continue;
+							item['func'] = idata;
 		except Exception as e: raise e;
 
 	def calc_time_lamda(self,struct,time_conf):
@@ -70,6 +79,8 @@ class TimeParse(TimeBase):
 					ret = self.calc_date_stc(item,struct,time_lamda);
 				elif item['label'] == 'REL':
 					ret = self.calc_timerel_stc(item,struct,time_conf);
+				elif item['label'] == 'RELA':
+					ret = self.calc_timerela_stc(item,struct,time_conf);
 				elif item['label'] == 'TimeSet':
 					ret = self.calc_timeset_stc(item,struct,time_conf);
 				else:
@@ -112,6 +123,10 @@ class TimeParse(TimeBase):
 		elif item['func']['type'] == "ONEDAY":
 			 struct['TimeParse'][item['func']['scope']] = item['func']['region'];
 			 struct['TimeParse']['strs'].append(item['str']);
+			 if item['func']['region'][0] > 12:
+			 	struct['TimeParse']['hour_flag'] = 12;
+			 else:
+			 	struct['TimeParse']['hour_flag'] = 0;
 		elif item['func']['type'] == 'JIERIWEEK':
 			if struct['TimeParse'].has_key('year'):
 				(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
@@ -126,6 +141,7 @@ class TimeParse(TimeBase):
 			time_lamda.append(item);
 			return False;
 		return True;
+	
 	def calc_timec_stc(self,item,struct,time_lamda):
 		for iitem in item['list']:
 			if iitem['label'] == 'TimeN' and iitem.has_key('func'):
@@ -144,6 +160,7 @@ class TimeParse(TimeBase):
 			 		else:
 			 			struct['TimeParse']['hour_flag'] = 0;
 		return True;
+	
 	def calc_time_stc(self,item,struct,time_lamda):
 		#解析小时级别
 		p = re.compile(u'[时点]');
@@ -225,6 +242,21 @@ class TimeParse(TimeBase):
 			struct['TimeParse']['strs'].append(item['str']);
 			return True;
 		return False;
+	def calc_timerela_stc(self,item,struct,time_conf):
+		if time_conf.has_key('time_origin'):
+			time_stc = time.localtime(time_conf['time_origin']);
+			value = item['num'].pop()['value'];
+			if item.has_key('func'):
+				func = item['func'];
+				if func['func'] == 'prev':
+					struct['TimeParse'][func['scope']] = \
+						[time_stc[date_index[func['scope']]] - int(value),time_stc[date_index[func['scope']]]];
+				elif func['func'] == 'next':
+					struct['TimeParse'][func['scope']] = \
+						[time_stc[date_index[func['scope']]],time_stc[date_index[func['scope']]] + int(value)];
+			struct['TimeParse']['strs'].append(item['str']);
+			return True;
+		return False;
 	#重新修复分词的结果通过匹配的词语
 	def reseg_text(self,struct):
 		if struct.has_key('TimeParse') and struct['TimeParse'].has_key('strs'):
@@ -236,4 +268,9 @@ class TimeParse(TimeBase):
 				if len(tstr) == 0: continue;
 				struct['seg_text'] = struct['seg_text'].replace(tstr,value,1);
 
-
+	def prev_num2text(self,item):
+		tstr = item['str'];
+		if not item.has_key('num'): return tstr;
+		for inum in item['num']:
+			tstr = tstr.replace(inum['value'],inum['label'],1);
+		return tstr;
