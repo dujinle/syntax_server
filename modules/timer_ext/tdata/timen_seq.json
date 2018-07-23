@@ -1349,5 +1349,27 @@
 			"func":"next",
 			"reg":"[后下]D秒"
 		}
+	],
+	"Direct":[
+		{
+			"type":"Direct",
+			"dir":"prev",
+			"reg":"前{1,}"
+		},
+		{
+			"type":"Direct",
+			"dir":"prev",
+			"reg":"上{1,}"
+		},
+		{
+			"type":"Direct",
+			"dir":"next",
+			"reg":"下{1,}"
+		},
+		{
+			"type":"Direct",
+			"dir":"next",
+			"reg":"后{1,}"
+		}
 	]
 }

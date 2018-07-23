@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-import sys,os,re,time
+import time,math
 
 month = [31,31,28,31,30,31,30,31,31,30,31,30,31];
 leap_mon = [31,31,29,31,30,31,30,31,31,30,31,30,31];
@@ -71,69 +71,59 @@ def time_from_stamp(stamp):
 	time_tuple = time.localtime(stamp);
 	return time_tuple;
 
-def _make_sure_time(mytime,sidx):
-	if mytime[0] == 'null': return False;
-	tidx = tmenu['sec'];
-	idx = tmenu[sidx];
-	if idx >= tidx:
-		if mytime[tidx] < 0:
-			mytime[tidx - 1] -= (mytime[tidx] // 60 + 1);
-			mytime[tidx] = 60 - mytime[tidx] % 60;
-		if mytime[tidx] >= 60:
-			mytime[tidx - 1] += mytime[tidx] // 60;
-			mytime[tidx] = mytime[tidx] % 60;
+def _make_sure_time(mytime):
+	#print 'start repiar time';
+	if mytime.has_key('second') and mytime.has_key('minute'):
+		if mytime['second'] < 0:
+			mytime['minute'] -= (math.fabs(mytime['second']) // 60 + 1);
+			mytime['second'] = 60 - math.fabs(mytime['second']) % 60;
+		if mytime['second'] >= 60:
+			mytime['minute'] += (math.fabs(mytime['second']) // 60);
+			mytime['second'] = math.fabs(mytime['second']) % 60;
 
-	tidx = tmenu['min'];
-	if idx >= tidx:
-		if mytime[tidx] < 0:
-			mytime[tidx - 1] -= (mytime[tidx] // 60 + 1);
-			mytime[tidx] = 60 - mytime[tidx] % 60;
-		if mytime[tidx] >= 60:
-			mytime[tidx] += mytime[tidx] // 60;
-			mytime[tidx] = mytime[tidx] % 60;
+	if mytime.has_key('minute') and mytime.has_key('hour'):
+		if mytime['minute'] < 0:
+			mytime['hour'] -= (math.fabs(mytime['minute']) // 60 + 1);
+			mytime['minute'] = 60 - math.fabs(mytime['minute']) % 60;
+		if mytime['minute'] >= 60:
+			mytime['hour'] += (math.fabs(mytime['minute']) // 60);
+			mytime['minute'] = math.fabs(mytime['minute']) % 60;
 
-	tidx = tmenu['hour'];
-	if idx >= tidx:
-		if mytime[tidx] < 0:
-			mytime[tidx - 1] = (mytime[tidx] // 24 + 1);
-			mytime[tidx] = 24 - mytime[tidx] % 24;
-		if mytime[tidx] > 24:
-			mytime[tidx - 1] += (mytime[tidx] // 24);
-			mytime[tidx] = mytime[tidx] % 24;
+	if mytime.has_key('hour') and mytime.has_key('hour'):
+		if mytime['hour'] < 0:
+			mytime['day'] -= (math.fabs(mytime['hour']) // 24 + 1);
+			mytime['hour'] = 24 - math.fabs(mytime['hour']) % 24;
+		if mytime['hour'] >= 24:
+			mytime['day'] += (math.fabs(mytime['hour']) // 24);
+			mytime['hour'] = math.fabs(mytime['hour']) % 24;
+	#计算日期需要知道是否 是瑞年
 
-	tidx = tmenu['day'];
-	if _is_leap_year(mytime[tmenu['year']]) and idx >= tidx:
-		mymon = mytime[tidx - 1] % 12;
-		while mytime[tidx] <= 0:
-			mytime[tidx] = mytime[tidx] + leap_mon[mymon - 1];
-			mytime[tidx - 1] = mytime[tidx - 1] - 1;
+	if not mytime.has_key('year'): return;
+	mymonth = month;
+	if _is_leap_year(mytime['year']) == True:
+		mymonth = leap_mon;
+
+	if mytime.has_key('day') and mytime.has_key('month'):
+		mymon = mytime['month'] % 12;
+		while mytime['day'] <= 0:
+			mytime['day'] = mytime['day'] + mymonth[mymon - 1];
+			mytime['month'] = mytime['month'] - 1;
 			if mymon == 0: mymon = 12;
 			else: mymon = mymon - 1;
 
-		mymon = mytime[tidx - 1] % 12;
-		while mytime[tidx] > leap_mon[mymon]:
-			mytime[tidx] = mytime[tidx] - leap_mon[mymon];
-			mytime[tidx - 1] = mytime[tidx - 1] + 1;
+		mymon = mytime['month'] % 12;
+		while mytime['day'] > mymonth[mymon]:
+			mytime['day'] = mytime['day'] - mymonth[mymon];
+			mytime['month'] = mytime['month'] + 1;
 			mymon = mymon + 1;
-	elif idx >= tidx:
-		mymon = mytime[tidx - 1] % 12;
-		while mytime[tidx] <= 0:
-			mytime[tidx] = mytime[tidx] + month[mymon - 1];
-			mytime[tidx - 1] = mytime[tidx - 1] - 1;
-			if mymon == 0: mymon = 12;
-			else: mymon = mymon - 1;
-		while mytime[tidx] > month[mymon]:
-			mytime[tidx] = mytime[tidx] - month[mymon];
-			mytime[tidx - 1] = mytime[tidx - 1] + 1;
 
-	tidx = tmenu['month'];
-	if idx >= tidx:
-		while mytime[tidx] <= 0:
-			mytime[tidx] = mytime[tidx] + 12;
-			mytime[tidx - 1] = mytime[tidx - 1] - 1;
-		while mytime[tidx] > 12:
-			mytime[tidx] = mytime[tidx] - 12;
-			mytime[tidx - 1] = mytime[tidx - 1] + 1;
+	if mytime.has_key('month') and mytime.has_key('year'):
+		while mytime['month'] <= 0:
+			mytime['month'] = mytime['month'] + 12;
+			mytime['year'] = mytime['year'] - 1;
+		while mytime['month'] > 12:
+			mytime['month'] = mytime['month'] - 12;
+			mytime['year'] = mytime['year'] + 1;
 
 def _is_leap_year(myyear):
 	if myyear % 400 == 0 or (myyear % 4 == 0 and myyear % 100 <> 0):

@@ -34,6 +34,9 @@
 		"(TimeN|TimeD){1,}TimeLN":{
 			"content":"第一季度以后"
 		},
+		"DirectTimeSet":{
+			"content":"上星期三"
+		},
 		"REL":{
 			"content":"早晨"
 		},

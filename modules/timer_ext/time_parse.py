@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
 import re,common,time
+import time_common as TimeCommon
 from time_base import TimeBase
 import time_calendar as TCalendarTool
 #标记对象以及链接的网络
@@ -13,7 +14,7 @@ date_index = {
 	'second':5
 };
 big = u'大';
-up = u'上'；
+up = u'上';
 down = u'下';
 
 class TimeParse(TimeBase):
@@ -25,6 +26,7 @@ class TimeParse(TimeBase):
 			self.parse_time_lamda(struct);
 			self.calc_time_lamda(struct,time_conf);
 			self.reseg_text(struct);
+			self.repair_time(struct);
 		except Exception as e: raise e;
 
 	def parse_time_lamda(self,struct):
@@ -39,15 +41,6 @@ class TimeParse(TimeBase):
 								amatch = p.search(iitem['str']);
 								if amatch is None: continue;
 								iitem['func'] = idata;
-				elif item['label'] == 'REL' or item['label'] == 'TimeN'\
-					or item['label'] == 'Other' or item['label'] == 'TimeD':
-					if self.data.has_key(item['type']):					
-						mdata = self.data[item['type']];
-						for idata in mdata:
-							p = re.compile(idata['reg']);
-							amatch = p.search(item['str']);
-							if amatch is None: continue;
-							item['func'] = idata;
 				elif item['label'] == 'RELA':
 					if self.data.has_key(item['type']):
 						tstr = self.prev_num2text(item);	
@@ -55,6 +48,14 @@ class TimeParse(TimeBase):
 						for idata in mdata:
 							p = re.compile(idata['reg']);
 							amatch = p.search(tstr);
+							if amatch is None: continue;
+							item['func'] = idata;
+				else:
+					if self.data.has_key(item['type']):					
+						mdata = self.data[item['type']];
+						for idata in mdata:
+							p = re.compile(idata['reg']);
+							amatch = p.search(item['str']);
 							if amatch is None: continue;
 							item['func'] = idata;
 		except Exception as e: raise e;
@@ -87,6 +88,12 @@ class TimeParse(TimeBase):
 					ret = self.calc_timerela_stc(item,struct,time_conf);
 				elif item['label'] == 'TimeSet':
 					ret = self.calc_timeset_stc(item,struct,time_conf);
+				elif item['label'] == 'Direct':
+					struct['TimeParse']['dir'] = item['func'];
+					struct['TimeParse']['dir']['times'] = 0;
+					for tdd in item['str']:
+						struct['TimeParse']['dir']['times'] = struct['TimeParse']['dir']['times'] + 1;
+					struct['TimeParse']['strs'].append(item['str']);
 				else:
 					time_lamda.append(item);
 					ret = False;
@@ -210,25 +217,31 @@ class TimeParse(TimeBase):
 		struct['TimeParse']['strs'].append(item['str']);
 	def calc_timeset_stc(self,item,struct,time_conf):
 		if time_conf.has_key('time_origin') and time_conf['time_fill'] == True:
-			time_stc = time.localtime(time_conf['time_origin']);
-			if not struct['TimeParse'].has_key('year'):
+			if struct['TimeParse'].has_key('dir'):
 				time_stc = time.localtime(time_conf['time_origin']);
-				struct['TimeParse']['year'] = time_stc[date_index['year']];
-			if not struct['TimeParse'].has_key('month'):
-				time_stc = time.localtime(time_conf['time_origin']);
-				struct['TimeParse']['month'] = time_stc[date_index['month']];
-			if not struct['TimeParse'].has_key('day'):
-				time_stc = time.localtime(time_conf['time_origin']);
-				struct['TimeParse']['day'] = time_stc[date_index['day']];
-			(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
-				= TCalendarTool.GetWeekDay(
-					int(struct['TimeParse']['year']),
-					int(struct['TimeParse']['month']),
-					int(struct['TimeParse']['day']),
-					int(item['num'].pop()['value'])
-				);
-			struct['TimeParse']['strs'].append(item['str']);
-			return True;
+				if not struct['TimeParse'].has_key('year'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['year'] = time_stc[date_index['year']];
+				if not struct['TimeParse'].has_key('month'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['month'] = time_stc[date_index['month']];
+				if not struct['TimeParse'].has_key('day'):
+					time_stc = time.localtime(time_conf['time_origin']);
+					struct['TimeParse']['day'] = time_stc[date_index['day']];
+				(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
+					= TCalendarTool.GetWeekDay(
+						int(struct['TimeParse']['year']),
+						int(struct['TimeParse']['month']),
+						int(struct['TimeParse']['day']),
+						int(item['num'].pop()['value'])
+					);
+				if struct['TimeParse']['dir']['dir'] == 'prev':
+					struct['TimeParse']['day'] = struct['TimeParse']['day'] - 7 * struct['TimeParse']['dir']['times'];
+				else:
+					struct['TimeParse']['day'] = struct['TimeParse']['day'] + 7 * struct['TimeParse']['dir']['times'];
+				struct['TimeParse']['strs'].append(item['str']);
+				del struct['TimeParse']['dir'];
+				return True;
 		return False;
 	def calc_timerel_stc(self,item,struct,time_conf):
 		if time_conf.has_key('time_origin'):
@@ -243,6 +256,17 @@ class TimeParse(TimeBase):
 					struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 1;
 				elif func['func'] == 'next2':
 					struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + 2;
+				tstr = big+item['str'];
+				while True:
+					index = struct['text'].find(tstr);
+					if index == -1: break;
+					print func['func'];
+					if func['func'] == 'prev' or func['func'] == 'prev2':
+						struct['TimeParse'][func['scope']] = struct['TimeParse'][func['scope']] - 1;
+					else:
+						struct['TimeParse'][func['scope']] = struct['TimeParse'][func['scope']] + 1;
+					item['str'] = tstr;
+					tstr = big+item['str'];
 			struct['TimeParse']['strs'].append(item['str']);
 			return True;
 		return False;
@@ -278,3 +302,8 @@ class TimeParse(TimeBase):
 		for inum in item['num']:
 			tstr = tstr.replace(inum['value'],inum['label'],1);
 		return tstr;
+
+
+	def repair_time(self,struct):
+		if struct.has_key('TimeParse'):
+			TimeCommon._make_sure_time(struct['TimeParse']);

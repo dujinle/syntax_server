@@ -187,15 +187,15 @@ class TimeLabel(TimeBase):
 	#重新修复分词的结果通过匹配的词语
 	def reseg_text(self,struct):
 		for item in struct['TimeLabel']:
-			if item['label'] == 'TimeN' or item['label'] == 'Time' or item['label'] == 'REL' \
-				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC' \
-				or item['label'] == 'TimeD' or item['label'] == 'RELA':
+#			if item['label'] == 'TimeN' or item['label'] == 'Time' or item['label'] == 'REL' \
+#				or item['label'] == 'TimeSet' or item['label'] == 'Date' or item['label'] == 'TimeC' \
+#				or item['label'] == 'TimeD' or item['label'] == 'RELA' or item['label'] == 'Direct':
 				istr = list(item['str']);
 				reg = ' *'.join(istr);
 				amatch = re.findall(reg,struct['seg_text']);
 				for tstr in amatch:
-						if len(tstr) == 0: continue;
-						struct['seg_text'] = struct['seg_text'].replace(tstr," " + item['str'],1);
+					if len(tstr) == 0: continue;
+					struct['seg_text'] = struct['seg_text'].replace(tstr," " + item['str'],1);
 
 	def sort_label(self,struct):
 		timelabel = list();
