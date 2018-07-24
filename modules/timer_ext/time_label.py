@@ -34,7 +34,7 @@ class TimeLabel(TimeBase):
 	def mark_time_label(self,struct):
 		for key in self.data.keys():
 			if not key == 'Date' and not key == 'Time' and \
-				not key == 'TimeSet' and not key == 'RELA' and not key == 'TimeD': continue;
+				not key == 'TimeSet' and not key == 'TimeD': continue;
 			item = self.data[key];
 			if item.has_key('reg'):
 				for reg in item['reg']:
@@ -104,7 +104,6 @@ class TimeLabel(TimeBase):
 				if key == 'TimeSet': continue;
 				if key == 'TimdD': continue;
 				if key == 'TimeLN': continue;
-				if key == 'RELA': continue;
 				item = self.data[key];
 				if item.has_key('reg'):
 					for reg in item['reg']:

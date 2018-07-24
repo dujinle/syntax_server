@@ -1136,6 +1136,38 @@
 			"reg":"三刻"
 		}
 	],
+	"Normal":[
+		{
+			"type":"TimeD",
+			"scope":"day",
+			"reg":"D[天日]"
+		},
+		{
+			"type":"TimeD",
+			"scope":"year",
+			"reg":"D年"
+		},
+		{
+			"type":"TimeD",
+			"scope":"month",
+			"reg":"D月"
+		},
+		{
+			"type":"TimeD",
+			"scope":"hour",
+			"reg":"D小时"
+		},
+		{
+			"type":"TimeD",
+			"scope":"minute",
+			"reg":"D分钟{0,1}"
+		},
+		{
+			"type":"TimeD",
+			"scope":"second",
+			"reg":"D秒"
+		}
+	],
 	"REL":[
 		{
 			"type":"REL",

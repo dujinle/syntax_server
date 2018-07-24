@@ -37,8 +37,14 @@
 		"DirectTimeSet":{
 			"content":"上星期三"
 		},
-		"REL":{
+		"DirectTimeD":{
+			"content":"前三天"
+		},
+		"TimeN":{
 			"content":"早晨"
+		},
+		"REL":{
+			"content":"明天"
 		},
 		"RELA":{
 			"content":"前三天"

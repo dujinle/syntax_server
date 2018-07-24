@@ -72,32 +72,33 @@ def time_from_stamp(stamp):
 	return time_tuple;
 
 def _make_sure_time(mytime):
-	#print 'start repiar time';
+#	print 'start repiar time';
 	if mytime.has_key('second') and mytime.has_key('minute'):
 		if mytime['second'] < 0:
-			mytime['minute'] -= (math.fabs(mytime['second']) // 60 + 1);
-			mytime['second'] = 60 - math.fabs(mytime['second']) % 60;
+			mytime['minute'] -= int(math.fabs(mytime['second'])) // 60 + 1;
+			mytime['second'] = 60 - int(math.fabs(mytime['second']) % 60);
 		if mytime['second'] >= 60:
-			mytime['minute'] += (math.fabs(mytime['second']) // 60);
+			mytime['minute'] += int(math.fabs(mytime['second'])) // 60;
 			mytime['second'] = math.fabs(mytime['second']) % 60;
 
 	if mytime.has_key('minute') and mytime.has_key('hour'):
 		if mytime['minute'] < 0:
-			mytime['hour'] -= (math.fabs(mytime['minute']) // 60 + 1);
-			mytime['minute'] = 60 - math.fabs(mytime['minute']) % 60;
+			mytime['hour'] -= int(math.fabs(mytime['minute'])) // 60 + 1;
+			mytime['minute'] = 60 - int(math.fabs(mytime['minute']))% 60;
 		if mytime['minute'] >= 60:
-			mytime['hour'] += (math.fabs(mytime['minute']) // 60);
-			mytime['minute'] = math.fabs(mytime['minute']) % 60;
+			mytime['hour'] += int(math.fabs(mytime['minute'])) // 60;
+			mytime['minute'] = int(math.fabs(mytime['minute'])) % 60;
 
-	if mytime.has_key('hour') and mytime.has_key('hour'):
+	if mytime.has_key('hour') and mytime.has_key('day'):
+#		print type(mytime['hour']),mytime['hour']
 		if mytime['hour'] < 0:
-			mytime['day'] -= (math.fabs(mytime['hour']) // 24 + 1);
-			mytime['hour'] = 24 - math.fabs(mytime['hour']) % 24;
+			mytime['day'] -= int(math.fabs(mytime['hour'])) // 24 + 1;
+			mytime['hour'] = 24 - int(math.fabs(mytime['hour'])) % 24;
 		if mytime['hour'] >= 24:
-			mytime['day'] += (math.fabs(mytime['hour']) // 24);
-			mytime['hour'] = math.fabs(mytime['hour']) % 24;
+			mytime['day'] += int(math.fabs(mytime['hour'])) // 24;
+			mytime['hour'] = int(math.fabs(mytime['hour'])) % 24;
 	#计算日期需要知道是否 是瑞年
-
+#	print 'make sure is leap year'
 	if not mytime.has_key('year'): return;
 	mymonth = month;
 	if _is_leap_year(mytime['year']) == True:
