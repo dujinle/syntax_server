@@ -21,7 +21,6 @@ class TimeParse(TimeBase):
 
 	def encode(self,struct,time_conf):
 		try:
-			return;
 			if not struct.has_key('TimeLamda'): return;
 			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
@@ -42,8 +41,8 @@ class TimeParse(TimeBase):
 								amatch = p.search(iitem['str']);
 								if amatch is None: continue;
 								iitem['func'] = idata;
-				elif item['label'] == 'TimeD':
-					if self.data.has_key(item['type']):					
+				elif item['label'] == 'TimeD' or item['label'] == 'TimeDD':
+					if self.data.has_key(item['type']):
 						mdata = self.data[item['type']];
 						for idata in mdata:
 							tstr = self.prev_num2text(item);
@@ -52,7 +51,7 @@ class TimeParse(TimeBase):
 							if amatch is None: continue;
 							item['func'] = idata;
 				else:
-					if self.data.has_key(item['type']):					
+					if self.data.has_key(item['type']):
 						mdata = self.data[item['type']];
 						for idata in mdata:
 							p = re.compile(idata['reg']);
@@ -91,6 +90,8 @@ class TimeParse(TimeBase):
 					for tdd in item['str']:
 						struct['TimeParse']['dir']['times'] = struct['TimeParse']['dir']['times'] + 1;
 					struct['TimeParse']['strs'].append(item['str']);
+				elif item['label'] == 'TimeDD':
+					ret = self.calc_timedd_stc(item,struct,time_conf);
 				else:
 					time_lamda.append(item);
 					ret = False;
@@ -286,6 +287,39 @@ class TimeParse(TimeBase):
 						struct['TimeParse'][func['scope']] = \
 							[time_stc[date_index[func['scope']]],time_stc[date_index[func['scope']]] + int(value)];
 				struct['TimeParse']['strs'].append(item['str']);
+				return True;
+		return False;
+
+	def calc_timedd_stc(self,item,struct,time_conf):
+		#print common.print_dic(item);
+		if item['type'] == 'Normal':
+			mydir = item['dir'];
+			if not self.data.has_key(mydir['type']): return False;
+			mdata = self.data[mydir['type']];
+			for idata in mdata:
+				p = re.compile(idata['reg']);
+				amatch = p.search(mydir['str']);
+				if amatch is None: continue;
+				mydir['func'] = idata;
+				break;
+			if not mydir.has_key('func'): return False;
+
+			mydir['times'] = 0;
+			for tdd in mydir['str']:
+				mydir['times'] = mydir['times'] + 1;
+
+			if time_conf.has_key('time_origin'):
+				time_stc = time.localtime(time_conf['time_origin']);
+				func = item['func'];
+				value = item['num'].pop()['value'];
+				if mydir['func']['dir'] == 'prev':
+					struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] - int(value);
+					struct['TimeParse']['type'] = 'past';
+				elif mydir['func']['dir'] == 'next':
+					struct['TimeParse'][func['scope']] = time_stc[date_index[func['scope']]] + int(value);
+					struct['TimeParse']['type'] = 'future';
+				struct['TimeParse']['strs'].append(item['str']);
+				struct['TimeParse']['strs'].append(mydir['str']);
 				return True;
 		return False;
 	#重新修复分词的结果通过匹配的词语

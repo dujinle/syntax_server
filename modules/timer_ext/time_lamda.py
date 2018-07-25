@@ -11,8 +11,8 @@ class TimeLamda(TimeBase):
 			self.prev_label(struct);
 			self.find_lamda(struct);
 			self.creat_lamda(struct);
-			self.creat_timedd_lamda(struct);
 			self.clear_time_label(struct);
+			self.creat_timedd_lamda(struct);
 		except Exception as e: raise e;
 
 	def find_lamda(self,struct):
