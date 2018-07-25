@@ -40,6 +40,9 @@
 		"DirectTimeD":{
 			"content":"前三天"
 		},
+		"TimeDDirect":{
+			"content":"三天前"
+		},
 		"TimeN":{
 			"content":"早晨"
 		},

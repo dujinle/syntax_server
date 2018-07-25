@@ -1209,7 +1209,7 @@
 			"type":"REL",
 			"scope":"day",
 			"func":"current",
-			"reg":"今[天日]"
+			"reg":"[今本][天日]"
 		},
 		{
 			"type":"REL",

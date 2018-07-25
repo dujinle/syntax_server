@@ -11,6 +11,7 @@ class TimeLamda(TimeBase):
 			self.prev_label(struct);
 			self.find_lamda(struct);
 			self.creat_lamda(struct);
+			self.creat_timedd_lamda(struct);
 			self.clear_time_label(struct);
 		except Exception as e: raise e;
 
@@ -71,6 +72,26 @@ class TimeLamda(TimeBase):
 			else:
 				struct['TimeLamda'] = timelamda;
 		except Exception as e: raise e;
+
+	def creat_timedd_lamda(self,struct):
+		timelamda = list();
+		first_flag = False;
+		while True:
+			if len(struct['TimeLamda']) == 0: break;
+			item = struct['TimeLamda'].pop(0);
+			if item['label'] == 'TimeD':
+				first_flag = True;
+				timelamda.append(item);
+			elif item['label'] == 'Direct' and first_flag == True:
+				prev_item = timelamda.pop();
+				prev_item['dir'] = item;
+				prev_item['label'] = 'TimeDD';
+				timelamda.append(prev_item);
+				first_flag = False;
+			else:
+				timelamda.append(item);
+				first_flag = False;
+		struct['TimeLamda'] = timelamda;
 
 	def prev_label(self,struct):
 		struct['lamda_text'] = list();

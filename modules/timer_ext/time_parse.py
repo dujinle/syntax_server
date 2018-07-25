@@ -21,6 +21,7 @@ class TimeParse(TimeBase):
 
 	def encode(self,struct,time_conf):
 		try:
+			return;
 			if not struct.has_key('TimeLamda'): return;
 			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
@@ -191,6 +192,8 @@ class TimeParse(TimeBase):
 			second = item['num'].pop(0);
 			struct['TimeParse']['second'] = int(second['value']);
 		struct['TimeParse']['strs'].append(item['str']);
+		return True;
+
 	def calc_date_stc(self,item,struct,time_lamda):
 		#解析小时级别
 		p = re.compile(u'年');
@@ -211,6 +214,8 @@ class TimeParse(TimeBase):
 			day = item['num'].pop(0);
 			struct['TimeParse']['day'] = int(day['value']);
 		struct['TimeParse']['strs'].append(item['str']);
+		return True;
+
 	def calc_timeset_stc(self,item,struct,time_conf):
 		if time_conf.has_key('time_origin') and time_conf['time_fill'] == True:
 			if struct['TimeParse'].has_key('dir'):
@@ -261,8 +266,8 @@ class TimeParse(TimeBase):
 						struct['TimeParse'][func['scope']] = struct['TimeParse'][func['scope']] - 1;
 					else:
 						struct['TimeParse'][func['scope']] = struct['TimeParse'][func['scope']] + 1;
-					item['str'] = tstr;
-					tstr = big+item['str'];
+					tstr = big + tstr;
+					struct['TimeParse']['strs'].append(big);
 			struct['TimeParse']['strs'].append(item['str']);
 			return True;
 		return False;
