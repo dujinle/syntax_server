@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-import sys,os,re,common
+import sys,os,re,common,collections
 from pdeal_base import PDealBase
 
 #汉字数字转换
@@ -14,7 +14,7 @@ class MkNumChar(PDealBase):
 	def match_item(self,struct):
 		try:
 			if not struct.has_key("SomeNum"):
-				struct['SomeNum'] = dict();
+				struct['SomeNum'] = collections.OrderedDict();
 			for key in self.data:
 				item = self.data[key];
 				comp = re.compile(item['reg']);

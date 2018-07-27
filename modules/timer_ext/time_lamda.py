@@ -97,9 +97,14 @@ class TimeLamda(TimeBase):
 		struct['lamda_text'] = list();
 		for istr in struct['seg_text'].split(' '):
 			if len(istr) == 0: continue;
+			flag = False;
 			for item in struct['TimeLabel']:
 				if istr == item['str']:
 					struct['lamda_text'].append(item['label']);
+					flag = True;
+					break;
+			if flag == False:
+				struct['lamda_text'].append(istr);
 		struct['lamda_text'] = ''.join(struct['lamda_text']);
 
 	def clear_time_label(self,struct):

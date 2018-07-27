@@ -8,7 +8,6 @@ class RmInvalidChar(PDealBase):
 
 	def encode(self,struct):
 		try:
-			pass;
 			self._replace_err_str(struct);
 #			self._deal_time_rep(struct);
 		except Exception as e: raise e;
