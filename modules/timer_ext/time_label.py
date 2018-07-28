@@ -70,9 +70,12 @@ class TimeLabel(TimeBase):
 				for key in struct['SomeNum'].keys():
 					item = struct['SomeNum'][key];
 					if len(item['start']) <= 0: continue;
+					ttstr = item['value'] + tm_str[index + 1:index + 2];
+					if struct['text'].find(ttstr) == -1: continue;
 					tm_str = tm_str.replace("D",item['value'],1);
 					tdic['num'].append(item);
 					item['start'].pop();
+					break;
 				index = tm_str.find('D');
 			tdic['str'] = tm_str;
 			struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
