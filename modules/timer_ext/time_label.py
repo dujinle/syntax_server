@@ -20,7 +20,6 @@ class TimeLabel(TimeBase):
 #			self.mark_objs_text(struct);
 			#重新处理一遍分词结果
 			self.reseg_text(struct);
-			return;
 			#根据分词排序TimeLabel
 			self.sort_label(struct);
 			if struct.has_key('tmp_text'):

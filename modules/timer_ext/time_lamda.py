@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-import re
+import re,common
 from time_base import TimeBase
 #标记对象以及链接的网络
 class TimeLamda(TimeBase):
@@ -18,6 +18,7 @@ class TimeLamda(TimeBase):
 	def find_lamda(self,struct):
 		try:
 			for key in self.data.keys():
+				if key == u'时间介词短语': continue;
 				item = self.data[key];
 				for reg in item.keys():
 					p = re.compile(reg);
@@ -40,11 +41,13 @@ class TimeLamda(TimeBase):
 	def creat_lamda(self,struct):
 		try:
 			timelamda = list();
+			#common.print_dic(struct['TimeLabel'])
 			for lamda in struct['TimeLamda']:
 				tmp_lamda = lamda;
 				lamda_stc = list();
-				index = 7;
+				index = 20;
 				while True:
+					#common.print_dic(struct['TimeLabel'])
 					if len(tmp_lamda) == 0:
 						print 'finish ok';
 						break;
@@ -54,6 +57,7 @@ class TimeLamda(TimeBase):
 						break;
 					for timelabel in struct['TimeLabel']:
 						idx = tmp_lamda.find(timelabel['label']);
+						print timelabel['label'],idx;
 						if idx == 0:
 							tmp_lamda = tmp_lamda.replace(timelabel['label'],'',1);
 							lamda_stc.append(timelabel);

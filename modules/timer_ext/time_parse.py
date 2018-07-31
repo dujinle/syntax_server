@@ -136,6 +136,9 @@ class TimeParse(TimeBase):
 			 	struct['TimeParse']['hour_flag'] = 12;
 			 else:
 			 	struct['TimeParse']['hour_flag'] = 0;
+		elif item['func']['type'] == 'JIJIE':
+			struct['TimeParse'][item['func']['scope']] = item['func']['region'];
+			struct['TimeParse']['strs'].append(item['str']);
 		elif item['func']['type'] == 'JIERIWEEK':
 			if struct['TimeParse'].has_key('year'):
 				(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
@@ -196,19 +199,19 @@ class TimeParse(TimeBase):
 		return True;
 
 	def calc_date_stc(self,item,struct,time_lamda):
-		#解析小时级别
+		#解析年级别
 		p = re.compile(u'年');
 		amatch = p.search(item['str']);
 		if not amatch is None:
 			year = item['num'].pop(0);
 			struct['TimeParse']['year'] = int(year['value']);
-		#解析分钟级别
+		#解析月级别
 		p = re.compile(u'月');
 		amatch = p.search(item['str']);
 		if not amatch is None:
 			month = item['num'].pop(0);
 			struct['TimeParse']['month'] = int(month['value']);
-		#解析秒级别
+		#解析日级别
 		p = re.compile(u'[日号]');
 		amatch = p.search(item['str']);
 		if not amatch is None:
