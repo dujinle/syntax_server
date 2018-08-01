@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自然语言处理Demo</title>  
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
+		<meta http-equiv="X-UA-Compatible" , content="IE=edge,chrome=1"> 
+		<meta name="keywords" content="自然语言处理,文本分析,文本分类,语义分析,语义识别,文本挖掘">
+		<link href="{{ static_url('css/style.css') }}" rel="stylesheet">
+	</head>
+	<body>
+		<!--build:header-template-->
+		<div class="dg-header">
+			<div class="container-fluid">
+				<div class="row content" id="content">
+					<div class="container input-container">
+						<ul class="nav nav-tabs" id="textExample">
+							<li class="active">
+								<a href="javascript:;">样本</a>
+							</li>
+						</ul>
+						<textarea class="form-control text-input demo0">北京时间5月9日，西班牙足协官方宣布，巴萨后卫罗贝托因为在国家德比中击打马塞洛，被禁赛4场。这意味着罗贝托将缺席巴萨剩下的3轮西甲，也将无缘下赛季西班牙超级杯。</textarea>
+						<button class="btn btn-primary apply-button">提交文本</button>
+					</div>
+				</div>
+				<div class="row char-analysis" id="char-analysis">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="module-container">
+									<h4 class="module-title-with-hr">词性分析</h4>
+									<div class="chart-container"></div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+								<div class="module-container">
+									<h4 class="module-title">词性图例</h4>
+									<div class="intro-holder legend-holder"></div>
+									<h4 class="module-title">词性说明</h4>
+									<div class="intro-holder">词性标注为分词结果中的每个单词标注一个正确的词性，确定每个词是名词、动词、形容词或其他词性。</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row char-ratio" id="char-ratio">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="module-container">
+									<h4 class="module-title-with-hr">词性构成比例</h4>
+									<div class="chart-container"></div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+								<div class="module-container">
+									<h4 class="module-title">词性图例</h4>
+									<div class="intro-holder legend-holder"></div>
+									<h4 class="module-title">词性构成比例说明</h4>
+									<div class="intro-holder">词性比例构成对已标注的词性进行汇总，统计了各个词性在文本中的所占比例。</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="fixed-right">
+			<div class="top-btn">返回顶部</div>
+		</div>
+		<script type="text/javascript" src="js/bundle.js"></script>
+	</body>
+</html>

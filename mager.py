@@ -48,7 +48,7 @@ class Mager:
 
 		self.timer.encode(self.struct);
 		return self.struct;
-common.debug == True;
+#common.debug == True;
 
 if common.debug == True:
 	try:

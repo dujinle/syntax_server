@@ -10,15 +10,15 @@ sys.path.append(os.path.join(base_path,'../'));
 
 from mager import Mager
 from result import ResultHandler
-from set_scene import SetSceneHandler
+from NlpHandler import NlpHandler
 
 class Application(tornado.web.Application):
 	def __init__(self):
 		self.mager = Mager();
 		self.mager.init();
 		handlers = [
-			(r"/get_sresult",ResultHandler,{'mager':self.mager}),
-			(r"/set_scene",SetSceneHandler,{'mager':self.mager}),
+			(r"/get_result",ResultHandler,{'mager':self.mager}),
+			(r"/nlp",NlpHandler),
 		];
 		settings = dict(
 				template_path = os.path.join(os.path.dirname(__file__),"templates"),
