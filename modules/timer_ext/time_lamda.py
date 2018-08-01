@@ -57,7 +57,7 @@ class TimeLamda(TimeBase):
 						break;
 					for timelabel in struct['TimeLabel']:
 						idx = tmp_lamda.find(timelabel['label']);
-						print timelabel['label'],idx;
+						#print timelabel['label'],idx;
 						if idx == 0:
 							tmp_lamda = tmp_lamda.replace(timelabel['label'],'',1);
 							lamda_stc.append(timelabel);
