@@ -19,8 +19,8 @@
 								<a href="javascript:;">样本</a>
 							</li>
 						</ul>
-						<textarea class="form-control text-input demo0">北京时间5月9日，西班牙足协官方宣布，巴萨后卫罗贝托因为在国家德比中击打马塞洛，被禁赛4场。这意味着罗贝托将缺席巴萨剩下的3轮西甲，也将无缘下赛季西班牙超级杯。</textarea>
-						<button class="btn btn-primary apply-button">提交文本</button>
+						<textarea class="form-control text-input demo0" id="text">北京时间5月9日，西班牙足协官方宣布，巴萨后卫罗贝托因为在国家德比中击打马塞洛，被禁赛4场。这意味着罗贝托将缺席巴萨剩下的3轮西甲，也将无缘下赛季西班牙超级杯。</textarea>
+						<button class="btn btn-primary apply-button" onclick="nlp_process()">提交文本</button>
 					</div>
 				</div>
 				<div class="row char-analysis" id="char-analysis">
@@ -29,7 +29,7 @@
 							<div class="col-xs-12 col-sm-8">
 								<div class="module-container">
 									<h4 class="module-title-with-hr">词性分析</h4>
-									<div class="chart-container"></div>
+									<div class="chart-container" id="chart"></div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4">
@@ -68,6 +68,7 @@
 		<div class="fixed-right">
 			<div class="top-btn">返回顶部</div>
 		</div>
-		<script type="text/javascript" src="js/bundle.js"></script>
+		<script type="text/javascript" src="{{ static_url('js/jquery-3.3.1.min.js') }}"></script>
+		<script type="text/javascript" src="{{ static_url('js/bundle.js') }}"></script>
 	</body>
 </html>

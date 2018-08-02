@@ -37,7 +37,7 @@ class Mager:
 		if struct.has_key('result'): del struct['result'];
 		if struct.has_key('TimeLabel'): del struct['TimeLabel'];
 
-	def encode(self,text,mdl = None,step = None):
+	def encode(self,text,mdl = None):
 		self._clear_struct(self.struct);
 		self.struct['text'] = text;
 		self.pdeal.encode(self.struct);

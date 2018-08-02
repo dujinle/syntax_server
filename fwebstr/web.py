@@ -11,6 +11,7 @@ sys.path.append(os.path.join(base_path,'../'));
 from mager import Mager
 from result import ResultHandler
 from NlpHandler import NlpHandler
+from NlpProcessHandler import NlpProcessHandler
 
 class Application(tornado.web.Application):
 	def __init__(self):
@@ -19,6 +20,7 @@ class Application(tornado.web.Application):
 		handlers = [
 			(r"/get_result",ResultHandler,{'mager':self.mager}),
 			(r"/nlp",NlpHandler),
+			(r"/nlp_process",NlpProcessHandler,{'mager':self.mager}),
 		];
 		settings = dict(
 				template_path = os.path.join(os.path.dirname(__file__),"templates"),
