@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 import sys,os,re,common,collections
 from pdeal_base import PDealBase
-
+import hanzi2num as CN2Num
 #汉字数字转换
 class MkNumChar(PDealBase):
 
@@ -24,6 +24,11 @@ class MkNumChar(PDealBase):
 					tdic = dict();
 					tdic['label'] = "D";
 					tdic['value'] = im;
+					tdic['stype'] = key;
+					if key == 'hanzi' or key == 'shanzi':
+						tdic['num'] = CN2Num.cn2dig(im);
+					else:
+						tdic['num'] = int(im);
 					tdic['type'] = "NUM";
 					struct['SomeNum'][im] = tdic;
 		except Exception as e: raise e;

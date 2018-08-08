@@ -29,6 +29,7 @@ class TimeLabel(TimeBase):
 			#再次修复分词和排序
 			self.reseg_text(struct);
 			self.sort_label(struct);
+			self.repair_label(struct);
 		except Exception as e: raise e;
 
 	def mark_time_label(self,struct):
@@ -185,6 +186,19 @@ class TimeLabel(TimeBase):
 				item['start'].append(index);
 				struct['tmp_text'] = struct['tmp_text'].replace(item['value'],item['label'],1);
 				index = struct['tmp_text'].find(item['value']);
+
+	#修复2014年的label 改为Time
+	def repair_label(self,struct):
+		for text in struct['TimeLabel']:
+			if text['label'] == 'TimeD':
+				idx = text['str'].find(u'年');
+				if idx <> -1:
+					for num in text['num']:
+						tstr = num['value'] + u'年';
+						if text['str'].find(tstr) <> -1:
+							if num['num'] > 999:
+								text['label'] = 'Date';
+								break;
 
 	#重新修复分词的结果通过匹配的词语
 	def reseg_text(self,struct):

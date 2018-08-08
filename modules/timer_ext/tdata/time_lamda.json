@@ -1,8 +1,8 @@
 ##时间标记组合规则
 {
 	"复合时间短语":{
-		"TimeC":{
-			"content":"清明上午"
+		"REL(TimeN|TimeC|TimeD|Time){1,}":{
+			"content":"当天凌晨"
 		},
 		"(TimeC|TimeN){1,}Time":{
 			"content":"上午9点"
@@ -22,9 +22,6 @@
 		"DateTime":{
 			"content":"5月11日8点10分"
 		},
-		"REL(TimeN|TimeC|TimeD|Time){1,}":{
-			"content":"当天凌晨"
-		},
 		"(Date|Time){1,}TimeLN":{
 			"content":"2003年1月1日前"
 		},
@@ -42,6 +39,9 @@
 		},
 		"TimeDDirect":{
 			"content":"三天前"
+		},
+		"TimeC":{
+			"content":"清明上午"
 		},
 		"Date":{
 			"content":"2014年3月15日"

@@ -22,7 +22,6 @@ class TimeParse(TimeBase):
 	def encode(self,struct,time_conf):
 		try:
 			if not struct.has_key('TimeLamda'): return;
-			struct['TimeParse'] = dict();
 			self.parse_time_lamda(struct);
 			self.calc_time_lamda(struct,time_conf);
 			self.reseg_text(struct);
@@ -31,94 +30,103 @@ class TimeParse(TimeBase):
 
 	def parse_time_lamda(self,struct):
 		try:
-			for item in struct['TimeLamda']:
-				if item['label'] == 'TimeC':
-					for iitem in item['list']:
-						if self.data.has_key(iitem['type']):
-							mdata = self.data[iitem['type']];
+			for lamda_stc in struct['TimeLamda']:
+				for item in lamda_stc:
+					if item['label'] == 'TimeC':
+						for iitem in item['list']:
+							if self.data.has_key(iitem['type']):
+								mdata = self.data[iitem['type']];
+								for idata in mdata:
+									p = re.compile(idata['reg']);
+									amatch = p.search(iitem['str']);
+									if amatch is None: continue;
+									iitem['func'] = idata;
+					elif item['label'] == 'TimeD' or item['label'] == 'TimeDD':
+						if self.data.has_key(item['type']):
+							mdata = self.data[item['type']];
+							for idata in mdata:
+								tstr = self.prev_num2text(item);
+								p = re.compile(idata['reg']);
+								amatch = p.search(tstr);
+								if amatch is None: continue;
+								item['func'] = idata;
+					else:
+						if self.data.has_key(item['type']):
+							mdata = self.data[item['type']];
 							for idata in mdata:
 								p = re.compile(idata['reg']);
-								amatch = p.search(iitem['str']);
+								amatch = p.search(item['str']);
 								if amatch is None: continue;
-								iitem['func'] = idata;
-				elif item['label'] == 'TimeD' or item['label'] == 'TimeDD':
-					if self.data.has_key(item['type']):
-						mdata = self.data[item['type']];
-						for idata in mdata:
-							tstr = self.prev_num2text(item);
-							p = re.compile(idata['reg']);
-							amatch = p.search(tstr);
-							if amatch is None: continue;
-							item['func'] = idata;
-				else:
-					if self.data.has_key(item['type']):
-						mdata = self.data[item['type']];
-						for idata in mdata:
-							p = re.compile(idata['reg']);
-							amatch = p.search(item['str']);
-							if amatch is None: continue;
-							item['func'] = idata;
+								item['func'] = idata;
 		except Exception as e: raise e;
 
 	def calc_time_lamda(self,struct,time_conf):
 		try:
-			struct['TimeParse']['strs'] = list();
 			time_lamda = list();
-			ret = False;
-			for item in struct['TimeLamda']:
-				if item['label'] == 'TimeN' and item.has_key('func'):
-					ret = self.calc_timen_stc(item,struct,time_lamda);
-				elif item['label'] == 'Other' and item.has_key('func'):
-					struct['TimeParse'][item['func']['scope']] = item['func']['region'];
-					struct['TimeParse']['strs'].append(item['str']);
-					ret = True;
-				elif item['label'] == 'TimeC':
-					ret = self.calc_timec_stc(item,struct,time_lamda);
-				elif item['label'] == 'Time':
-					ret = self.calc_time_stc(item,struct,time_lamda);
-				elif item['label'] == 'Date':
-					ret = self.calc_date_stc(item,struct,time_lamda);
-				elif item['label'] == 'REL':
-					ret = self.calc_timerel_stc(item,struct,time_conf);
-				elif item['label'] == 'TimeD':
-					ret = self.calc_timed_stc(item,struct,time_conf);
-				elif item['label'] == 'TimeSet':
-					ret = self.calc_timeset_stc(item,struct,time_conf);
-				elif item['label'] == 'Direct':
-					struct['TimeParse']['dir'] = item['func'];
-					struct['TimeParse']['dir']['times'] = 0;
-					for tdd in item['str']:
-						struct['TimeParse']['dir']['times'] = struct['TimeParse']['dir']['times'] + 1;
-					struct['TimeParse']['strs'].append(item['str']);
-				elif item['label'] == 'TimeDD':
-					ret = self.calc_timedd_stc(item,struct,time_conf);
-				else:
-					time_lamda.append(item);
-					ret = False;
+			struct['TimeParses'] = list();
+			for lamda_stc in struct['TimeLamda']:
+				struct['TimeParse'] = dict();
+				struct['TimeParse']['strs'] = list();
+				ret = False;
+				for item in lamda_stc:
+					#common.print_dic(item);
+					if item['label'] == 'TimeN' and item.has_key('func'):
+						ret = self.calc_timen_stc(item,struct,time_lamda);
+					elif item['label'] == 'Other' and item.has_key('func'):
+						struct['TimeParse'][item['func']['scope']] = item['func']['region'];
+						struct['TimeParse']['strs'].append(item['str']);
+						ret = True;
+					elif item['label'] == 'TimeC':
+						ret = self.calc_timec_stc(item,struct,time_lamda);
+					elif item['label'] == 'Time':
+						ret = self.calc_time_stc(item,struct,time_lamda);
+					elif item['label'] == 'Date':
+						ret = self.calc_date_stc(item,struct,time_lamda);
+					elif item['label'] == 'REL':
+						ret = self.calc_timerel_stc(item,struct,time_conf);
+					elif item['label'] == 'TimeD':
+						ret = self.calc_timed_stc(item,struct,time_conf);
+					elif item['label'] == 'TimeSet':
+						ret = self.calc_timeset_stc(item,struct,time_conf);
+					elif item['label'] == 'Direct':
+						struct['TimeParse']['dir'] = item['func'];
+						struct['TimeParse']['dir']['times'] = 0;
+						for tdd in item['str']:
+							struct['TimeParse']['dir']['times'] = struct['TimeParse']['dir']['times'] + 1;
+						struct['TimeParse']['strs'].append(item['str']);
+					elif item['label'] == 'TimeDD':
+						ret = self.calc_timedd_stc(item,struct,time_conf);
+					else:
+						time_lamda.append(item);
+						ret = False;
+
+					if time_conf['time_fill'] == True and ret == True:
+						if not struct['TimeParse'].has_key('year'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['year'] = time_stc[date_index['year']];
+						if not struct['TimeParse'].has_key('month'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['month'] = time_stc[date_index['month']];
+						if not struct['TimeParse'].has_key('day'):
+							time_stc = time.localtime(time_conf['time_origin']);
+							struct['TimeParse']['day'] = time_stc[date_index['day']];
+
+					if struct['TimeParse'].has_key('year_type') and struct['TimeParse']['year_type'] == 'lunar':
+						if struct['TimeParse'].has_key('year') and struct['TimeParse'].has_key('month') and struct['TimeParse'].has_key('day'):
+							(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
+								= TCalendarTool.ToSolarDate(
+									int(struct['TimeParse']['year']),
+									int(struct['TimeParse']['month']),
+									int(struct['TimeParse']['day'])
+								);
+							struct['TimeParse']['year_type'] = 'solar';
+				struct['TimeParses'].append(dict(struct['TimeParse']));
+				if struct.has_key('TimeParse'):
+					del struct['TimeParse'];
 			if len(time_lamda) == 0 and struct.has_key('TimeLamda'):
 				del struct['TimeLamda'];
 			else:
 				struct['TimeLamda'] = time_lamda;
-			if time_conf['time_fill'] == True and ret == True:
-				if not struct['TimeParse'].has_key('year'):
-					time_stc = time.localtime(time_conf['time_origin']);
-					struct['TimeParse']['year'] = time_stc[date_index['year']];
-				if not struct['TimeParse'].has_key('month'):
-					time_stc = time.localtime(time_conf['time_origin']);
-					struct['TimeParse']['month'] = time_stc[date_index['month']];
-				if not struct['TimeParse'].has_key('day'):
-					time_stc = time.localtime(time_conf['time_origin']);
-					struct['TimeParse']['day'] = time_stc[date_index['day']];
-
-			if struct['TimeParse'].has_key('year_type') and struct['TimeParse']['year_type'] == 'lunar':
-				if struct['TimeParse'].has_key('year') and struct['TimeParse'].has_key('month') and struct['TimeParse'].has_key('day'):
-					(struct['TimeParse']['year'],struct['TimeParse']['month'],struct['TimeParse']['day']) \
-						= TCalendarTool.ToSolarDate(
-							int(struct['TimeParse']['year']),
-							int(struct['TimeParse']['month']),
-							int(struct['TimeParse']['day'])
-						);
-					struct['TimeParse']['year_type'] = 'solar';
 		except Exception as e: raise e;
 
 	def calc_timen_stc(self,item,struct,time_lamda):
@@ -327,14 +335,16 @@ class TimeParse(TimeBase):
 		return False;
 	#重新修复分词的结果通过匹配的词语
 	def reseg_text(self,struct):
-		if struct.has_key('TimeParse') and struct['TimeParse'].has_key('strs'):
-			istr = struct['TimeParse']['strs'];
-			reg = ' *'.join(istr);
-			value = ''.join(istr);
-			amatch = re.findall(reg,struct['seg_text']);
-			for tstr in amatch:
-				if len(tstr) == 0: continue;
-				struct['seg_text'] = struct['seg_text'].replace(tstr,value,1);
+		if struct.has_key('TimeParses'):
+			for time_parse in struct['TimeParses']:
+				if time_parse.has_key('strs'):
+					istr = time_parse['strs'];
+					reg = ' *'.join(istr);
+					value = ''.join(istr);
+					amatch = re.findall(reg,struct['seg_text']);
+					for tstr in amatch:
+						if len(tstr) == 0: continue;
+						struct['seg_text'] = struct['seg_text'].replace(tstr,value,1);
 
 	def prev_num2text(self,item):
 		tstr = item['str'];

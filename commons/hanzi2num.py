@@ -40,52 +40,58 @@ CN_UNIT = {
 
 
 def cn2dig(cn):
-	lcn = list(cn)
-	unit = 0 #当前的单位
-	ldig = []#临时数组
+	try:
+		lcn = list(cn)
+		unit = 0 #当前的单位
+		ldig = []#临时数组
 
-	while lcn:
-		cndig = lcn.pop()
-		if CN_UNIT.has_key(cndig):
-			unit = CN_UNIT.get(cndig)
-			if unit==10000:
-				ldig.append('w')    #标示万位
-				unit = 1
-			elif unit==100000000:
-				ldig.append('y')    #标示亿位
-				unit = 1
-			elif unit==1000000000000:#标示兆位
-				ldig.append('z')
-				unit = 1
-			continue
-		else:
-			dig = CN_NUM.get(cndig)
-			if unit:
-				dig = dig*unit
-				unit = 0
-			ldig.append(dig)
-	if unit==10:    #处理10-19的数字
-		ldig.append(10)
-	ret = 0
-	tmp = 0
-	while ldig:
-		x = ldig.pop()
-		if x=='w':
-			tmp *= 10000
-			ret += tmp
-			tmp=0
-		elif x=='y':
-			tmp *= 100000000
-			ret += tmp
-			tmp=0
-		elif x=='z':
-			tmp *= 1000000000000
-			ret += tmp
-			tmp=0
-		else:
-			tmp += x
-	ret += tmp
-	return ret
+		while lcn:
+			cndig = lcn.pop()
+			if CN_UNIT.has_key(cndig):
+				unit = CN_UNIT.get(cndig)
+				if unit==10000:
+					ldig.append('w')    #标示万位
+					unit = 1
+				elif unit==100000000:
+					ldig.append('y')    #标示亿位
+					unit = 1
+				elif unit==1000000000000:#标示兆位
+					ldig.append('z')
+					unit = 1
+				continue
+			elif CN_NUM.has_key(cndig):
+				dig = CN_NUM.get(cndig)
+				if unit:
+					dig = dig*unit
+					unit = 0
+				ldig.append(dig)
+			else:
+				ldig.append(int(cndig))
+		if unit==10:    #处理10-19的数字
+			ldig.append(10)
+		ret = 0
+		tmp = 0
+		print ldig
+		while ldig:
+			x = ldig.pop()
+			if x=='w':
+				tmp *= 10000
+				ret += tmp
+				tmp=0
+			elif x=='y':
+				tmp *= 100000000
+				ret += tmp
+				tmp=0
+			elif x=='z':
+				tmp *= 1000000000000
+				ret += tmp
+				tmp=0
+			else:
+				tmp += x
+		ret += tmp
+		print ret
+		return ret
+	except Exception as e: raise e; 
 #ldig.reverse()
 #print ldig
 #print CN_NUM[u'七']

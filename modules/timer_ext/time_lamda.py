@@ -25,8 +25,9 @@ class TimeLamda(TimeBase):
 					amatch = p.search(struct['lamda_text']);
 					if amatch is None: continue;
 					struct['TimeLamda'].append(amatch.group());
-					#struct['lamda_text'] = struct['lamda_text'].replace(amatch.group(),'',1);
+					struct['lamda_text'] = struct['lamda_text'].replace(amatch.group(),'',1);
 			#去除重复的结果
+			'''
 			lamda_max = None;
 			prev_len = 0;
 			for lamda in struct['TimeLamda']:
@@ -36,6 +37,7 @@ class TimeLamda(TimeBase):
 			struct['TimeLamda'] = list();
 			if not lamda_max is None:
 				struct['TimeLamda'].append(lamda_max);
+			'''
 		except Exception as e: raise e;
 
 	def creat_lamda(self,struct):
@@ -71,31 +73,31 @@ class TimeLamda(TimeBase):
 							break;
 				if len(lamda_stc) > 0:
 					timelamda.append(lamda_stc);
-			if len(timelamda) > 0:
-				struct['TimeLamda'] = timelamda.pop();
-			else:
-				struct['TimeLamda'] = timelamda;
+			struct['TimeLamda'] = timelamda;
 		except Exception as e: raise e;
 
 	def creat_timedd_lamda(self,struct):
-		timelamda = list();
-		first_flag = False;
-		while True:
-			if len(struct['TimeLamda']) == 0: break;
-			item = struct['TimeLamda'].pop(0);
-			if item['label'] == 'TimeD':
-				first_flag = True;
-				timelamda.append(item);
-			elif item['label'] == 'Direct' and first_flag == True:
-				prev_item = timelamda.pop();
-				prev_item['dir'] = item;
-				prev_item['label'] = 'TimeDD';
-				timelamda.append(prev_item);
-				first_flag = False;
-			else:
-				timelamda.append(item);
-				first_flag = False;
-		struct['TimeLamda'] = timelamda;
+		lamda_after = list();
+		for lamda_stc in struct['TimeLamda']:
+			timelamda = list();
+			first_flag = False;
+			while True:
+				if len(lamda_stc) == 0: break;
+				item = lamda_stc.pop(0);
+				if item['label'] == 'TimeD':
+					first_flag = True;
+					timelamda.append(item);
+				elif item['label'] == 'Direct' and first_flag == True:
+					prev_item = timelamda.pop();
+					prev_item['dir'] = item;
+					prev_item['label'] = 'TimeDD';
+					timelamda.append(prev_item);
+					first_flag = False;
+				else:
+					timelamda.append(item);
+					first_flag = False;
+			lamda_after.append(timelamda);
+		struct['TimeLamda'] = lamda_after;
 
 	def prev_label(self,struct):
 		struct['lamda_text'] = list();
@@ -115,10 +117,11 @@ class TimeLamda(TimeBase):
 		timelabel = list();
 		for item in struct['TimeLabel']:
 			flag = False;
-			for lamda in struct['TimeLamda']:
-				if lamda['str'] == item['str']:
-					flag = True;
-					break;
+			for lamda_stc in struct['TimeLamda']:
+				for lamda in lamda_stc:
+					if lamda['str'] == item['str']:
+						flag = True;
+						break;
 			if flag == False:
 				timelabel.append(item);
 		if len(timelabel) == 0:
