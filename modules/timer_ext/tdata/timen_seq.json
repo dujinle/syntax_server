@@ -1155,7 +1155,7 @@
 		{
 			"type":"TimeD",
 			"scope":"hour",
-			"reg":"D小时"
+			"reg":"D个{,1}小时"
 		},
 		{
 			"type":"TimeD",

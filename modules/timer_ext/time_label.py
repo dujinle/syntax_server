@@ -17,6 +17,7 @@ class TimeLabel(TimeBase):
 			self.prev_num2text(struct);
 			self.mark_time_label(struct);
 			self.mark_timeln_text(struct);
+
 #			self.mark_objs_text(struct);
 			#重新处理一遍分词结果
 			self.reseg_text(struct);
@@ -78,7 +79,7 @@ class TimeLabel(TimeBase):
 					break;
 				index = tm_str.find('D');
 			tdic['str'] = tm_str;
-			struct['tmp_text'] = struct['tmp_text'].replace(tstr,tm_str,1);
+			struct['tmp_text'] = struct['tmp_text'].replace(tstr,key,1);
 
 	def _match_weekend_stc(self,struct,reg,key,iitem):
 		amatch = re.findall(reg,struct['tmp_text']);
