@@ -19,6 +19,7 @@ class Mager:
 		self.wordseg = WordSeg();
 		self.timer = TimeMager();
 		self.pdeal = PrevMager();
+		self.concpt = ConMager();
 
 		self.struct = collections.OrderedDict();
 		self.modules = dict();
@@ -27,6 +28,7 @@ class Mager:
 		try:
 			self.timer.init();
 			self.pdeal.init('PDeal');
+			self.concpt.init('Concept');
 		except Exception as e:
 			raise e;
 
@@ -36,10 +38,12 @@ class Mager:
 		if struct.has_key('SomeNum'): del struct['SomeNum'];
 		if struct.has_key('result'): del struct['result'];
 		if struct.has_key('TimeLabel'): del struct['TimeLabel'];
+		if struct.has_key('label_final'): del struct['label_final'];
 
 	def encode(self,text,mdl = None):
 		self._clear_struct(self.struct);
 		self.struct['text'] = text;
+		self.struct['label_final'] = dict();
 		self.pdeal.encode(self.struct);
 
 		self.struct['seg_text'] = self.wordseg.tokens(self.struct['text']);
@@ -47,8 +51,10 @@ class Mager:
 		self.struct['result'] = dict();
 
 		self.timer.encode(self.struct);
+
+		self.concpt.encode(self.struct);
 		return self.struct;
-#common.debug == True;
+common.debug = False;
 
 if common.debug == True:
 	try:

@@ -1,8 +1,24 @@
 function parse_data(data){
-	var TimeParse = data['TimeParse'];
-	var str = TimeParse['strs'].join('');
-	var html_str = "<font color='red'>" + str + "</font>";
-	data['seg_text'] = data['seg_text'].replace(str,html_str);
+	var stc = data['stc'];
+	var chart_more = document.getElementById('chart_more');
+	var chart_more_array = new Array();
+	for(var key in stc){
+		item = stc[key];
+		if(item['type'] == 'TIME'){
+			var html_str = "<font color='red'>" + item['str'] + "</font>";
+			data['seg_text'] = data['seg_text'].replace(item['str'],html_str);
+			chart_more_array[0] = "<font color='red'>时间</font>";
+		}else if(item['type'] == 'NUM'){
+			var html_str = "<font color='blue'>" + item['str'] + "</font>";
+			data['seg_text'] = data['seg_text'].replace(item['str'],html_str);
+			chart_more_array[1] = "<font color='blue'>数字</font>";
+		}else if(item['type'] == "NP"){
+			var html_str = "<font color='green'>" + item['str'] + "</font>";
+			data['seg_text'] = data['seg_text'].replace(item['str'],html_str);
+			chart_more_array[2] = "<font color='green'>地点名词</font>";
+		}
+	}
+	chart_more.innerHTML = chart_more_array.join(" ");
 	return data;
 }
 

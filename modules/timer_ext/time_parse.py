@@ -26,6 +26,7 @@ class TimeParse(TimeBase):
 			self.calc_time_lamda(struct,time_conf);
 			self.reseg_text(struct);
 			self.repair_time(struct);
+			self.label_final(struct);
 		except Exception as e: raise e;
 
 	def parse_time_lamda(self,struct):
@@ -363,3 +364,32 @@ class TimeParse(TimeBase):
 			if struct['TimeParse'].has_key('minute') and type(struct['TimeParse']['minute']) == list: return;
 			if struct['TimeParse'].has_key('second') and type(struct['TimeParse']['second']) == list: return;
 			TimeCommon._make_sure_time(struct['TimeParse']);
+
+	def label_final(self,struct):
+		if struct.has_key('lamda_text'):
+			del struct['lamda_text'];
+
+		some_num = dict();
+		for num_key in struct['SomeNum'].keys():
+			num = struct['SomeNum'][num_key];
+			if len(num['start']) == 0:
+				continue;
+			else:
+				some_num[num_key] = num;
+		if len(some_num) == 0:
+			del struct['SomeNum'];
+		else:
+			struct['SomeNum'] = some_num;
+
+		if struct.has_key('TimeLabel'):
+			for label in struct['TimeLabel']:
+				if label['type'] == 'Time':
+					struct['label_final'][label['str']] = label;
+					#struct['seg_text'] = struct['seg_text'].replace(label['str'],'',1);
+			del struct['TimeLabel']
+
+		if struct.has_key('TimeParses'):
+			for par in struct['TimeParses']:
+				tstr = ''.join(par['strs']);
+				struct['label_final'][tstr] = par;
+				#struct['seg_text'] = struct['seg_text'].replace(tstr,'',1);
