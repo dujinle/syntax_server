@@ -9,9 +9,8 @@ from logger import *
 abspath = os.path.dirname(__file__);
 
 sys.path.append(base_path);
-sys.path.append(base_path + '/../mainpy');
+sys.path.append(base_path + '/..');
 #===================================================
-
 class RequestHandler(tornado.web.RequestHandler):
 
 	def __init__(self,*args,**kwargs):

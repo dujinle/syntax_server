@@ -81,3 +81,33 @@ def list_join(dicm,mlist):
 			m = str(s);
 		strs = strs + m + dicm;
 	return strs[:-1];
+
+def graph_dot_dict(tdict,name):
+
+	graph_dot = '';
+	graph_dot = graph_dot + 'digraph\t' + name + '\t{\n';
+	graph_dot = graph_dot +  '\tbgcolor = black\n';
+	graph_dot = graph_dot +  '\tedge [color = white]\n';
+	graph_dot = graph_dot +  '\tnode[fontname=FangSong,color = white,fontcolor=white]\n';
+	graph_dot = graph_dot +  '\trankdir = LR\n';
+	graph_dot = graph_dot +  '\tautosize = false\n';
+	graph_dot = graph_dot +  '\tsize=\"40, 50\"\n';
+	for key in tdict.keys():
+		item = tdict[key];
+		if item.has_key('child'):
+			for child in item['child']:
+				begin = item['str'];
+				if item.has_key('type'):
+					begin = '\"' + begin + ':' +  item['stype'] + '\"';
+				tail = child['str'];
+				if child.has_key('type'):
+					tail = '\"' + tail + ':' +  child['stype'] + '\"';
+				graph_dot = graph_dot + '\t' + begin + '->' + tail + '[label=child,fontcolor=white]\n';
+		else:
+			begin = item['str'];
+			if item.has_key('type'):
+				begin = '\"' + begin + ':' +  item['stype'] + '\"';
+			graph_dot = graph_dot + '\t' + begin + '->' + begin + '[label=self,fontcolor=white]\n';
+	graph_dot = graph_dot +  '}'
+	print graph_dot;
+	return graph_dot;

@@ -7,9 +7,11 @@ class Connect(BaseConnect):
 
 	__instance = None;
 	def __new__(cls,*args,**kw):
+		print 'creat Connect obj......'
 		if Connect.__instance is None:
 			Connect.__instance = object.__new__(cls,*args,**kw);
-			return Connect.__instance;
+			print Connect.__instance
+		return Connect.__instance;
 
 	def __init__(self,*args,**kw):
 		super(Connect,self).__init__(*args,**kw);
