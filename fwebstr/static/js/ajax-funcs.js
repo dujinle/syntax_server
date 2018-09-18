@@ -3,7 +3,7 @@ function onload(action,param,cb) {
 	console.log("start onload data......");
 	$.ajax({
 		async:false,
-		url: 'http://10.10.1.126:28089/' + action,
+		url: '/' + action,
 		type:"post",
 		data:JSON.stringify(param),
 		dataType:"text",
@@ -16,6 +16,33 @@ function onload(action,param,cb) {
 		}
 	});
 }
+
+function get_table(table_name,key){
+	onload("readtable",{"tablename":table_name,"header_name":key},function(data){
+
+		var dot = data.result.dot;
+		var keys = data.result.keys;
+		//var image = Viz(dot, { format: "png-image-element" });
+		var result = Viz(dot,{engine:"dot"});
+		var canvasOne = document.getElementById("canvasOne");
+		var table_info = document.getElementById("table_info");
+		var table_list = document.getElementById("table_list");
+		var graph = document.getElementById("graph");
+		document.removeEventListener('DOMMouseScroll',scrollFunc);
+		document.removeEventListener("load", windowLoadHandler);
+		window.onmousewheel=document.onmousewheel=null;
+		var table_list_html = "<li class=\"header\">数据头</li>";
+		for(var i = 0;i < keys.length;i++){
+			var item = keys[i];
+			table_list_html = table_list_html + "<li><a href=\"javascript:void(0)\" onclick=\"get_table('" + table_name + "','" + item + "')\">" + item + "</a></li>"
+		}
+		table_list.innerHTML = table_list_html;
+		table_info.style.display = "";
+		canvasOne.style.display = "none";
+		graph.innerHTML = result;
+	});
+}
+
 function into_words(tablename,words){
 	var ev = window.event;
 	var mousePos = mousePosition(ev);
@@ -30,7 +57,7 @@ function into_words(tablename,words){
 	var obj = null;
 	$.ajax({
 		async:false,
-		url: 'http://10.10.1.126:28089/getitem',
+		url: '/getitem',
 		type:"post",
 		data:JSON.stringify(param),
 		dataType:"text",
@@ -62,7 +89,7 @@ function del_item(){
 	var obj = null;
 	$.ajax({
 		async:false,
-		url: 'http://10.10.1.126:28089/delitem',
+		url: 'delitem',
 		type:"post",
 		data:JSON.stringify(param),
 		dataType:"text",
@@ -93,7 +120,7 @@ function add_item(){
 	var obj = null;
 	$.ajax({
 		async:false,
-		url: 'http://10.10.1.126:28089/additem',
+		url: 'additem',
 		type:"post",
 		data:JSON.stringify(param),
 		dataType:"text",

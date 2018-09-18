@@ -1,86 +1,95 @@
 ﻿<!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>词性信息体验中心</title>
-<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"-->
-<link rel="stylesheet" href="{{ static_url('css/sidebar-menu.css') }}">
-<link rel="stylesheet" href="{{ static_url('css/main-sidebar.css') }}">
-<link rel="stylesheet" href="{{ static_url('css/common.css') }}">
-<script src="http://code.jquery.com/jquery-2.1.1.min.js" integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ=" crossorigin="anonymous"></script>
-<!--script src="{{ static_url('js/jquery-2.1.1.min.js') }}" type="text/javascript"></script-->
-<script src="{{ static_url('js/sidebar-menu.js') }}"></script>
-<script src="{{ static_url('js/ajax-funcs.js') }}"></script>
-<script src="{{ static_url('js/modernizr.min.js') }}"></script>
-<script src="{{ static_url('js/qiu-funcs.js') }}"></script>
-</head>
-<body>
-<aside class="main-sidebar">
-<section  class="sidebar">
-	<ul class="sidebar-menu">
-	  <li class="header">MAIN NAVIGATION</li>
-	  <li class="treeview">
-		<a href="#">
-		  <i class="fa fa-dashboard"></i> <span>数据列表</span> <i class="fa fa-angle-left pull-right"></i>
-		</a>
-
-		<ul class="treeview-menu" id="child">
-		  <!--li><a href="#"><i class="fa fa-circle-o"></i> Dashboard v1</a></li-->
-		  <!--li><a href="#"><i class="fa fa-circle-o"></i> Dashboard v2</a></li-->
-		</ul>
-	  </li>
-	</ul>
-  </section>
- </aside>
-<script>
-$.sidebarMenu($('.sidebar-menu'))
-</script>
-
-<div style="text-align:center">
-
-	<canvas id="canvasOne" width="1000" height="800" ></canvas>
-
-</div>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>词性信息体验中心</title>
+		<link rel="stylesheet" href="{{ static_url('css/sidebar-menu.css') }}">
+		<link rel="stylesheet" href="{{ static_url('css/main-sidebar.css') }}">
+		<link rel="stylesheet" href="{{ static_url('css/common.css') }}">
+		<!--script src="http://code.jquery.com/jquery-2.1.1.min.js" integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ=" crossorigin="anonymous"></script-->
+		<script src="{{ static_url('js/jquery-3.3.1.min.js') }}"></script>
+		<script src="{{ static_url('js/sidebar-menu.js') }}"></script>
+		<script src="{{ static_url('js/viz.js') }}"></script>
+		<script src="{{ static_url('js/ajax-funcs.js') }}"></script>
+		<script src="{{ static_url('js/modernizr.min.js') }}"></script>
+		<script src="{{ static_url('js/qiu-funcs.js') }}"></script>
+	</head>
+	<body>
+		<div id="body">
+			<aside class="main-sidebar">
+				<section  class="sidebar">
+					<ul class="sidebar-menu">
+						<li class="header">语义解析</li>
+						<li class="treeview">
+							<a href="#">
+								<span>数据列表</span>
+							</a>
+							<ul class="treeview-menu" id="child"></ul>
+						</li>
+						<li>
+							<a href="/nlp"><span>语义解析体验</span></a>
+						</li>
+					</ul>
+				</section>
+			</aside>
+			<script>
+				$.sidebarMenu($('.sidebar-menu'))
+			</script>
 
 
-<script type="text/javascript">
-var param = {level:1};
-var sphereRad = 280;
-var radius_sp=1;
-var opt_display_dots = false;
-var unicodeFlakes = [];
-onload('readlist',param,function(data){
-	/*注册事件*/
-	if(document.addEventListener){ 
-		document.addEventListener('DOMMouseScroll',scrollFunc,false); 
-	}//W3C 
-	window.onmousewheel=document.onmousewheel=scrollFunc;//IE/Opera/Chrome 
+			<article class="article" style="text-align:center" id="context">
+				<div id="table_info" class="table_info" style="display:none;">
+					<div id="table_list" class="table_list"></div>
+					<div id="graph" class="graph"></div>
+				</div>
+				<canvas id="canvasOne" width="1000" height="800" ></canvas>
+			</artcle>
+		</div>
 
-	window.addEventListener("load", windowLoadHandler, false);
-//	console.log(data);
-	var tables = data.result.tables;
-	for(tt in tables){
-		var vtt = tables[tt];
-		var child = document.getElementById("child");
-		var url = "http://10.10.1.126:28089/table?tablename=" + vtt;
-		child.innerHTML = child.innerHTML + "<li><a href=\""+ url + "\" ><i class=" + vtt + "></i>" + vtt + "</a></li>";
-	}
-	var res = data.result.dot;
-	for(key in res){
-		value = res[key];
-//		console.log(value);
-		if (!!value.stype){
-			unicodeFlakes.push(key + ":" +value.stype);
-		}else{
-			unicodeFlakes.push(key);
-		}
-	}
-});
 
-</script>
-
-</body>
+		<script type="text/javascript">
+			var table_context = {
+				"SomeMoods":"情态词",
+				"SomeName":"人名词",
+				"SomeNouns":"名词",
+				"SomeTenses":"时态词",
+				"SomeVerbs":"动词",
+				"SomePois":"地点名词",
+				"SomeUnits":"单位名称",
+				"SomeProns":"介词",
+				"SomeLogics":"逻辑词",
+				"SomeAuxs":"助词"
+			};
+			var param = {level:1};
+			var sphereRad = 280;
+			var radius_sp=1;
+			var opt_display_dots = false;
+			var unicodeFlakes = [];
+			onload('readlist',param,function(data){
+				/*注册事件*/
+				if(document.addEventListener){
+					document.addEventListener('DOMMouseScroll',scrollFunc,false);
+				}
+				window.onmousewheel=document.onmousewheel=scrollFunc;
+				window.addEventListener("load", windowLoadHandler, false);
+				var tables = data.result.tables;
+				for(tt in tables){
+					var vtt = tables[tt];
+					var child = document.getElementById("child");
+					child.innerHTML = child.innerHTML + "<li><a href='#' onclick='get_table(\"" + vtt + "\",\"none\" )' ><i class=" + vtt + "></i>" +table_context[vtt] + "</a></li>";
+				}
+				var res = data.result.dot;
+				for(key in res){
+					value = res[key];
+					if (!!value.stype){
+						unicodeFlakes.push(key + ":" +value.stype);
+					}else{
+						unicodeFlakes.push(key);
+					}
+				}
+			});
+		</script>
+	</body>
 </html>

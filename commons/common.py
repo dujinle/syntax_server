@@ -85,17 +85,24 @@ def list_join(dicm,mlist):
 def graph_dot_dict(tdict,name):
 
 	graph_dot = '';
-	graph_dot = graph_dot + 'digraph\t' + name + '\t{\n';
-	graph_dot = graph_dot +  '\tbgcolor = black\n';
+	graph_dot = graph_dot + 'digraph\ttest\t{\n';
+	graph_dot = graph_dot +  '\tbgcolor = \"#222d32\"\n';
 	graph_dot = graph_dot +  '\tedge [color = white]\n';
 	graph_dot = graph_dot +  '\tnode[fontname=FangSong,color = white,fontcolor=white]\n';
 	graph_dot = graph_dot +  '\trankdir = LR\n';
-	graph_dot = graph_dot +  '\tautosize = false\n';
-	graph_dot = graph_dot +  '\tsize=\"40, 50\"\n';
-	for key in tdict.keys():
-		item = tdict[key];
+	graph_dot = graph_dot +  '\tautosize = true\n';
+#graph_dot = graph_dot +  '\tsize=\"30,40\"\n';
+	pop_list = list();
+	if name is None:
+		pop_list.extend(tdict.values());
+	else:
+		pop_list.append(tdict[name]);
+	while True:
+		if len(pop_list) == 0: break;
+		item = pop_list.pop();
 		if item.has_key('child'):
 			for child in item['child']:
+				pop_list.append(child);
 				begin = item['str'];
 				if item.has_key('type'):
 					begin = '\"' + begin + ':' +  item['stype'] + '\"';

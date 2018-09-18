@@ -1,6 +1,6 @@
 body {
-	background-color:#000000;
-	color:#555555;                                                                                                                                                                                   
+	background-color:#222d32;
+	color:#555555;
 }
 
 h4 {
@@ -26,3 +26,55 @@ a {
 	text-decoration:none;
 }
 
+.table_list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	background-color: #222d32;
+	width:100px;
+}
+
+.table_list > li {
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+.table_list > li > a {
+	padding: 12px 5px 12px 15px;
+	display: block;
+	border-left: 3px solid transparent;
+	color: #b8c7ce;
+}
+
+.table_list > li:hover > a,
+.table_list > li.active > a {
+	color: #fff;
+	background: #1e282c;
+	border-left-color: #3c8dbc;
+}
+.table_list > li .label,
+.table_list > li .badge {
+	margin-top: 3px;
+	margin-right: 5px;
+}
+.table_list li.header {
+	padding: 10px 25px 10px 15px;
+	font-size: 12px;
+	color: #4b646f;
+	background: #1a2226;
+}
+.table_info {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width:100%;
+	min-height: 100%;
+	background-color: #222d32;
+}
+.graph {
+}
+.article {
+	float:right;
+	width:90%;
+	height:800px;
+}
