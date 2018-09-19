@@ -40,7 +40,25 @@ function get_table(table_name,key){
 		table_info.style.display = "";
 		canvasOne.style.display = "none";
 		graph.innerHTML = result;
+		var test = document.getElementsByTagName("text");
+		for(i = 0;i < test.length;i++){
+			var value = test[i].innerHTML;
+			if (value == "child" || value == "self"){
+				continue;
+			}
+			test[i].innerHTML = "<a href='javascript:void(0)' onclick='into_words(\""+ table_name + "\",\""+ value +"\")'>" + value + "</a>";
+		}
 	});
+}
+
+function mousePosition(ev){
+	if(ev.pageX || ev.pageY){//firefox、chrome等浏览器
+		return {x:ev.pageX,y:ev.pageY};
+	}
+	return {// IE浏览器
+		x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+		y:ev.clientY + document.body.scrollTop - document.body.clientTop
+	}
 }
 
 function into_words(tablename,words){
@@ -48,7 +66,6 @@ function into_words(tablename,words){
 	var mousePos = mousePosition(ev);
 	console.log(mousePos);
 	$('#white_content').css( { position : 'absolute', top : mousePos.y, left : mousePos.x } ).show();
-	$('#black_overlay').show();
 	var param = {
 		tablename:tablename,
 		words:words.split(':')[0]
@@ -73,6 +90,7 @@ function into_words(tablename,words){
 		document.getElementById('text1').value = JSON.stringify(obj.result,null,2);
 	}
 }
+
 function del_item(){
 	var tablename = document.title;
 	console.log("del item start......" + tablename);
@@ -132,4 +150,8 @@ function add_item(){
 			console.log(data);
 		}
 	});
+}
+
+function on_close(){
+	document.getElementById('white_content').style.display='none';
 }

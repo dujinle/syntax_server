@@ -86,7 +86,7 @@ def graph_dot_dict(tdict,name):
 
 	graph_dot = '';
 	graph_dot = graph_dot + 'digraph\ttest\t{\n';
-	graph_dot = graph_dot +  '\tbgcolor = \"#222d32\"\n';
+	graph_dot = graph_dot +  '\tbgcolor = \"black\"\n';
 	graph_dot = graph_dot +  '\tedge [color = white]\n';
 	graph_dot = graph_dot +  '\tnode[fontname=FangSong,color = white,fontcolor=white]\n';
 	graph_dot = graph_dot +  '\trankdir = LR\n';

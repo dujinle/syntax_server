@@ -1,5 +1,5 @@
 body {
-	background-color:#222d32;
+	background-color:black;
 	color:#555555;
 }
 
@@ -69,12 +69,66 @@ a {
 	height: 100%;
 	width:100%;
 	min-height: 100%;
-	background-color: #222d32;
+	background-color: black;
 }
-.graph {
-}
+.graph {}
+
 .article {
 	float:right;
 	width:90%;
 	height:800px;
+}
+.white_content{
+	display:none;
+	position:absolute;
+	top:25%;
+	left:25%;
+	width:20%;
+	height:50%;
+	padding:16px;
+	border:2px solid orange;
+	background-color:#222d32;
+	z-index:1002;
+	overflow:auto;
+}
+.close {
+	position:absolute;
+	width:80%;
+	height:5%;
+	top:0%;
+	float:right;
+}
+
+.form {
+	position:absolute;
+	width:90%;
+	height:90%;
+	top:5%;
+}
+
+.textarea_write {
+	width: 100%;
+	height: 40%;
+	position:absolute;
+	color:white;
+	top:50%;
+	background-color:#222d32;
+}
+
+.textarea_read {
+	width: 100%;
+	height: 40%;
+	position:absolute;
+	color:white;
+	top:5%;
+	background-color:#222d32;
+}
+.input {
+	width: 100%;
+	height: 5%;
+	position:absolute;
+	color:white;
+	bottom:1%;
+	text-align:center;
+	background-color:#222d32;
 }
