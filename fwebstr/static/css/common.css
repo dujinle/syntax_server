@@ -111,7 +111,7 @@ a {
 	height: 40%;
 	position:absolute;
 	color:white;
-	top:50%;
+	top:55%;
 	background-color:#222d32;
 }
 
@@ -128,7 +128,6 @@ a {
 	height: 5%;
 	position:absolute;
 	color:white;
-	bottom:1%;
-	text-align:center;
+	top:50%;
 	background-color:#222d32;
 }

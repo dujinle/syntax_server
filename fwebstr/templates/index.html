@@ -24,12 +24,26 @@
 					<a href="javascript:void(0)" onclick="on_close()">Close</a>
 				</div>
 				<form class="form" action="#">
-					<textarea id="text1" class="textarea_read" onlyread></textarea>
-					<textarea id="text2" class="textarea_write"></textarea>
-					<div class="input">
-						<a href="javascript:void(0)" onclick=""> 删除</a>
-						<a href="javascript:void(0)" onclick="add_item()"> 添加</a>
+					<div style="width:100%;">
+						<span style="font-size:12px;">节点详细信息:</span>
+						<a href="javascript:void(0)" onclick=""><span style="font-size:12px;float:right;">删除</span></a>
 					</div>
+					<textarea id="text1" class="textarea_read" onlyread></textarea>
+					<div class="input">
+						<span style="font-size:12px;">输入节点信息:</span>
+						<a href="javascript:void(0)" onclick="add_item()"><span style="font-size:12px;float:right;">添加</span></a>
+					</div>
+					<textarea id="text2" class="textarea_write" ></textarea>
+					<script type="text/javascript">
+						var json = {
+							"str":"test",
+							"type":"LR",
+							"stype":"LB"
+						};
+						var json_strt = JSON.stringify(json,null,2);
+						var textarea = document.getElementById("text2");
+						textarea.placeholder = json_strt;
+					</script>
 				</form>
 			</div>
 			<aside class="main-sidebar">
